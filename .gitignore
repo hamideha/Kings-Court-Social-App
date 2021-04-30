@@ -1,0 +1,16 @@
+.yarn
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+yarn.lock
+
+node_modules
+
+# dotenv environment variables file
+.env
+.env.test
+
+config
+
