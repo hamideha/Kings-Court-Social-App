@@ -9,9 +9,9 @@ type User {
   lastName: String,
   email: String,
   password: String,
-
+  messages: [Message!]!
 }
-type Mutation {
+extend type Mutation {
   updateUser(firstName: String, lastName: String, email: String, password: String): User,
   deleteUser(id: Int): Boolean,
   addUser(firstName: String, lastName: String, email: String, password: String): User
