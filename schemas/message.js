@@ -9,15 +9,26 @@ type Message {
   likes: Int,
   user: User!
 }
+extend type Query {
+  Messages: [Message],
+  Message(id: Int): Message 
+}
 extend type Mutation {
   deleteMessage(id: Int): Boolean,
   addMessage(content: String, userId: Int, likes: Int): Message
 }
 `;
 
+// const hello = async () => {
+//     const foo = await Message(sequelize, DataTypes).create({ content: 'the-foo', userId: 7 });
+//     console.log(foo.getUsers())
+// }
+// hello()
+
 module.exports.messageResolver = {
     Query: {
         Messages: async () => { return Message(sequelize, DataTypes).findAll() },
+        Message: async (obj, args) => { return Message(sequelize, DataTypes).findByPk(args.id) }
     },
     Mutation: {
         // A GraphQl resolver follows this structure for arguments human(obj, args, context, info)

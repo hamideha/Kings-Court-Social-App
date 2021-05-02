@@ -11,6 +11,10 @@ type User {
   password: String,
   messages: [Message!]!
 }
+extend type Query {
+  Users: [User],
+  User(id: Int): User 
+}
 extend type Mutation {
   updateUser(firstName: String, lastName: String, email: String, password: String): User,
   deleteUser(id: Int): Boolean,
@@ -21,6 +25,7 @@ extend type Mutation {
 module.exports.userResolver = {
   Query: {
     Users: async () => { return User(sequelize, DataTypes).findAll() },
+    User: async (obj, args) => { return User(sequelize, DataTypes).findByPk(args.id) }
   },
   Mutation: {
     // A GraphQl resolver follows this structure for arguments human(obj, args, context, info)

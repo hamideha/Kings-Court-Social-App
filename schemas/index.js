@@ -5,8 +5,7 @@ const merge = require('deepmerge')
 
 const typeDefs = gql`
 type Query {
-  Users: [User],
-  Messages: [Message]
+  _empty: String,
 }
 
 type Mutation {
