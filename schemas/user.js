@@ -1,5 +1,4 @@
-const { sequelize, DataTypes } = require('../models/index')
-const User = require('../models/user')
+const { User } = require('../models/index')
 
 const { gql } = require('apollo-server-express');
 
@@ -23,15 +22,20 @@ extend type Mutation {
   `;
 
 module.exports.userResolver = {
+  User: {
+    async messages(user) {
+      return user.getMessages()
+    }
+  },
   Query: {
-    Users: async () => { return User(sequelize, DataTypes).findAll() },
-    User: async (obj, args) => { return User(sequelize, DataTypes).findByPk(args.id) }
+    Users: async () => { return User.findAll() },
+    User: async (obj, args) => { return User.findByPk(args.id) }
   },
   Mutation: {
     // A GraphQl resolver follows this structure for arguments human(obj, args, context, info)
     // args is the arguments passed in your query/mutation
     updateUser: async (obj, args) => {
-      const updated = User(sequelize, DataTypes).update({ ...args }, {
+      const updated = User.update({ ...args }, {
         where: { id: args.id },
         returning: true,
         plain: true
@@ -39,11 +43,11 @@ module.exports.userResolver = {
       return updated.then(data => data[1]).catch(err => false)
     },
     addUser: async (obj, args) => {
-      const created = User(sequelize, DataTypes).create({ ...args })
+      const created = User.create({ ...args })
       return created
     },
     deleteUser: async (obj, args) => {
-      const deleted = User(sequelize, DataTypes).destroy({
+      const deleted = User.destroy({
         where: { id: args.id }
       })
       return deleted

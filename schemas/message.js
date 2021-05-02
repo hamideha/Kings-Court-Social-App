@@ -1,5 +1,4 @@
-const { sequelize, DataTypes } = require('../models/index')
-const Message = require('../models/message')
+const { Message, User } = require('../models/index')
 
 const { gql } = require('apollo-server-express');
 
@@ -19,26 +18,25 @@ extend type Mutation {
 }
 `;
 
-// const hello = async () => {
-//     const foo = await Message(sequelize, DataTypes).create({ content: 'the-foo', userId: 7 });
-//     console.log(foo.getUsers())
-// }
-// hello()
-
 module.exports.messageResolver = {
+    Message: {
+        async user(message) {
+            return message.getUser()
+        }
+    },
     Query: {
-        Messages: async () => { return Message(sequelize, DataTypes).findAll() },
-        Message: async (obj, args) => { return Message(sequelize, DataTypes).findByPk(args.id) }
+        Messages: async () => { return Message.findAll() },
+        Message: async (obj, args) => { return Message.findByPk(args.id) }
     },
     Mutation: {
         // A GraphQl resolver follows this structure for arguments human(obj, args, context, info)
         // args is the arguments passed in your query/mutation
         addMessage: async (obj, args) => {
-            const created = Message(sequelize, DataTypes).create({ ...args })
+            const created = Message.create({ ...args })
             return created
         },
         deleteMessage: async (obj, args) => {
-            const deleted = Message(sequelize, DataTypes).destroy({
+            const deleted = Message.destroy({
                 where: { id: args.id }
             })
             return deleted

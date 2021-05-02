@@ -3,13 +3,6 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Messages', {
-      content: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        validate: {
-          len: [1, 248],
-        }
-      },
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -20,11 +13,19 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users', 
+          model: 'Users',
           key: 'id',
+          as: 'userId',
         },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
+      },
+      content: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        validate: {
+          len: [1, 248],
+        }
       },
       likes: {
         defaultValue: 0,
