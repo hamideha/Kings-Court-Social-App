@@ -7,9 +7,7 @@ const { types, resolvers } = require('./schemas/index')
 
 const app = express();
 
-app.use(cors({
-    origin: true, credentials: true
-}))
+app.use(cors({ origin: true, credentials: true }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

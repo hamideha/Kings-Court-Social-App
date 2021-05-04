@@ -14,13 +14,14 @@ extend type Query {
 }
 extend type Mutation {
   deleteMessage(id: Int): Boolean,
-  addMessage(content: String, userId: Int, likes: Int): Message
+  addMessage(content: String, userId: Int, likes: Int): Message,
+  likeMessage(id: Int): Int
 }
 `;
 
 module.exports.messageResolver = {
     Message: {
-        async user(message) {
+        user: async (message) => {
             return message.getUser()
         }
     },
@@ -40,6 +41,11 @@ module.exports.messageResolver = {
                 where: { id: args.id }
             })
             return deleted
+        },
+        likeMessage: async (obj, args) => {
+            const liked = await Message.findByPk(args.id);
+            const result = await liked.increment('likes');
+            return result.likes
         }
     }
 }

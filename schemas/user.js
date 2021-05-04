@@ -23,7 +23,7 @@ extend type Mutation {
 
 module.exports.userResolver = {
   User: {
-    async messages(user) {
+    messages: async (user) => {
       return user.getMessages()
     }
   },
