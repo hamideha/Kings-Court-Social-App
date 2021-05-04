@@ -1,8 +1,13 @@
 const { User } = require('../models/index')
+const { authenticateFacebook } = require('../auth/passport')
 
 const { gql } = require('apollo-server-express');
 
 module.exports.userTypeDef = gql`
+type AuthResponse {
+  token: String
+  name: String
+}
 type User {
   firstName: String,
   lastName: String,
@@ -17,7 +22,8 @@ extend type Query {
 extend type Mutation {
   updateUser(firstName: String, lastName: String, email: String, password: String): User,
   deleteUser(id: Int): Boolean,
-  addUser(firstName: String, lastName: String, email: String, password: String): User
+  addUser(firstName: String, lastName: String, email: String, password: String): User,
+  authUser(accessToken: String!): AuthResponse!
 }
   `;
 
@@ -51,6 +57,19 @@ module.exports.userResolver = {
         where: { id: args.id }
       })
       return deleted
+    },
+    authUser: async (obj, args, { req, res }) => {
+      req.body = {
+        ...req.body,
+        access_token: args.accessToken,
+      };
+      try {
+        // data contains the accessToken, refreshToken and profile from passport
+        const { data, info } = await authenticateFacebook(req, res);
+      }
+      catch (err) {
+        console.log(err)
+      }
     }
   }
 }
