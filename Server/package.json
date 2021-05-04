@@ -4,6 +4,13 @@
   "main": "app.js",
   "author": "ahamideh <ahamideh18@hotmail.com>",
   "license": "MIT",
+  "scripts": {
+    "client": "cd ../Client && yarn start",
+    "server": "nodemon server.js",
+    "build": "cd ../Client && yarn run build",
+    "dev": "concurrently --kill-others-on-fail \"yarn run server\" \"yarn run client\"",
+    "start": "node server.js"
+  },
   "dependencies": {
     "apollo-server-express": "^2.23.0",
     "bcrypt": "^5.0.1",

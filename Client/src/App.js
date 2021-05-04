@@ -1,4 +1,14 @@
-function App() {
+import { useQuery } from 'react-query'
+import axios from 'axios'
+
+const App = () => {
+
+  const { isLoading, data } = useQuery('api', () =>
+    axios.get('/api')
+      .then((response) => response)
+  )
+  console.log(data, isLoading)
+
   return (
     <div className="App">
       <header className="App-header">
