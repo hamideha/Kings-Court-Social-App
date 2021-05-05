@@ -1,29 +1,32 @@
-import { useQuery } from 'react-query'
-import axios from 'axios'
+// import FacebookLogin from 'react-facebook-login';
+
+// import { gql, useQuery } from '@apollo/client';
+
+// const GET_MESSAGES = gql`
+//   query Messages {
+//     Messages{
+//       content
+//       user {
+//         email
+//         firstName
+//         lastName
+//       }
+//     }
+//   }
+// `;
 
 const App = () => {
-
-  const { isLoading, data } = useQuery('api', () =>
-    axios.get('/api')
-      .then((response) => response)
-  )
-  console.log(data, isLoading)
+  // const { loading, error, data } = useQuery(GET_MESSAGES);
+  // console.log(loading, error, data)
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* <FacebookLogin
+        appId="532721914385485"
+        autoLoad={true}
+        fields="name,email,picture"
+        callback={(res) => console.log(res)}
+      /> */}
     </div>
   );
 }

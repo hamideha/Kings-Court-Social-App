@@ -24,7 +24,7 @@ const schema = makeExecutableSchema({
 const server = new ApolloServer({
     schema,
     context: ({ req, res }) => {
-        if (!req.headers.authorization) throw new AuthenticationError('you must be logged in');
+        // if (!req.headers.authorization) throw new AuthenticationError('you must be logged in');
         return { req, res }
     },
 });
