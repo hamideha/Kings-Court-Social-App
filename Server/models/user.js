@@ -1,4 +1,5 @@
 'use strict';
+const jwt = require('jsonwebtoken');
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
@@ -17,20 +18,25 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isEmail: true,
       }
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        len: [8, 50],
-      }
-    },
+    }
   }, {
     modelName: 'User',
   });
 
   User.associate = (models) => {
     User.hasMany(models.Message, { foreignKey: 'userId', as: 'messages' })
+  }
+
+  User.prototype.upsertUser = ({ profile }) => {
+    const newUser = User.findOrCreate({
+      where: { email: profile.emails[0].value },
+      defaults: {
+        firstName: profile.name.givenName,
+        lastName: profile.name.familyName,
+        email: profile.emails[0].value
+      }
+    })
+    return newUser
   }
 
   return User;

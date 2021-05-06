@@ -1,5 +1,6 @@
 const { User } = require('../models/index')
-const { authenticateFacebook } = require('../auth/passport')
+const { authenticateGoogle } = require('../auth/passport')
+const jwt = require('jsonwebtoken');
 
 const { gql } = require('apollo-server-express');
 
@@ -12,7 +13,6 @@ type User {
   firstName: String,
   lastName: String,
   email: String,
-  password: String,
   messages: [Message!]!
 }
 extend type Query {
@@ -20,9 +20,9 @@ extend type Query {
   User(id: Int): User 
 }
 extend type Mutation {
-  updateUser(firstName: String, lastName: String, email: String, password: String): User,
+  updateUser(firstName: String, lastName: String, email: String): User,
   deleteUser(id: Int): Boolean,
-  addUser(firstName: String, lastName: String, email: String, password: String): User,
+  addUser(firstName: String, lastName: String, email: String): User,
   authUser(accessToken: String!): AuthResponse!
 }
   `;
@@ -65,10 +65,22 @@ module.exports.userResolver = {
       };
       try {
         // data contains the accessToken, refreshToken and profile from passport
-        const { data, info } = await authenticateFacebook(req, res);
+        const { data, info } = await authenticateGoogle(req, res);
+
+        if (data) {
+          const user = User.prototype.upsertUser(data)
+
+          const token = jwt.sign({
+            accessToken: data.accessToken
+          }, process.env.AUTH_SECRET, { expiresIn: '1h' });
+
+          if (user) {
+            return { token }
+          }
+        }
       }
       catch (err) {
-        console.log(err)
+        return err
       }
     }
   }

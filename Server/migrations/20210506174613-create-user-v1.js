@@ -25,13 +25,6 @@ module.exports = {
           isEmail: true,
         }
       },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-          len: [8, 50],
-        }
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

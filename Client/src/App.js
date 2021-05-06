@@ -1,4 +1,4 @@
-// import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
 
 // import { gql, useQuery } from '@apollo/client';
 
@@ -18,15 +18,19 @@
 const App = () => {
   // const { loading, error, data } = useQuery(GET_MESSAGES);
   // console.log(loading, error, data)
+  const responseGoogle = (response) => {
+    console.log(response);
+  }
 
   return (
     <div className="App">
-      {/* <FacebookLogin
-        appId="532721914385485"
-        autoLoad={true}
-        fields="name,email,picture"
-        callback={(res) => console.log(res)}
-      /> */}
+      <GoogleLogin
+        clientId="192080241061-q9ih3auadn4u0v6nckcr6jfkv6kt7dr8.apps.googleusercontent.com"
+        buttonText="Login"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+        cookiePolicy={'single_host_origin'}
+      />
     </div>
   );
 }

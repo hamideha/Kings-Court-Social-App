@@ -2,13 +2,24 @@ require('./.pnp.js').setup(); // Required to be able to use Plug'n'Play instead 
 require('dotenv').config()
 const express = require('express');
 const cors = require('cors');
+const passport = require('passport');
+var cookieParser = require('cookie-parser')
 
 const { ApolloServer, makeExecutableSchema, AuthenticationError } = require('apollo-server-express');
-const { types, resolvers } = require('./schemas/index')
+const { types, resolvers } = require('./schemas/index');
 
 const app = express();
 
-app.use(cors({ origin: true, credentials: true }))
+app.use(cookieParser(process.env.AUTH_SECRET))
+app.use(require("express-session")({
+    secret: process.env.AUTH_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize())
+app.use(passport.session());
+
+app.use(cors({ origin: "*", credentials: true }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
