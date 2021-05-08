@@ -17,7 +17,14 @@ const queryClient = new QueryClient({
 
 const client = new ApolloClient({
   uri: '/graphql',
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  request: async operation => {
+    operation.setContext({
+      fetchOptions: {
+        credentials: 'include'
+      }
+    })
+  },
 });
 
 ReactDOM.render(

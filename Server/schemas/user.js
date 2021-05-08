@@ -68,13 +68,15 @@ module.exports.userResolver = {
         const { data, info } = await authenticateGoogle(req, res);
 
         if (data) {
-          const user = User.prototype.upsertUser(data)
-
-          const token = jwt.sign({
-            accessToken: data.accessToken
-          }, process.env.AUTH_SECRET, { expiresIn: '1h' });
+          const user = await User.prototype.upsertUser(data)
 
           if (user) {
+            const token = jwt.sign({
+              userId: user[0].id,
+              email: user[0].email
+            }, process.env.AUTH_SECRET, { expiresIn: '1h' });
+            const cookie = res.cookie('token', token, { maxAge: 90000, httpOnly: true })
+
             return { token }
           }
         }
