@@ -1,25 +1,35 @@
 import GoogleLogin from 'react-google-login';
 
-// import { gql, useQuery } from '@apollo/client';
+import { gql, useQuery, useMutation } from '@apollo/client';
 
-// const GET_MESSAGES = gql`
-//   query Messages {
-//     Messages{
-//       content
-//       user {
-//         email
-//         firstName
-//         lastName
-//       }
-//     }
-//   }
-// `;
+const GET_MESSAGES = gql`
+  query Messages {
+    Messages{
+      content
+      user {
+        email
+        firstName
+        lastName
+      }
+    }
+  }
+`;
+
+const AUTH_USER = gql`
+  mutation authUser($accessToken: String!) {
+    authUser(accessToken: $accessToken) {
+      firstName
+    }
+  }
+`;
+
 
 const App = () => {
   // const { loading, error, data } = useQuery(GET_MESSAGES);
-  // console.log(loading, error, data)
+  const [authUser] = useMutation(AUTH_USER);
+
   const responseGoogle = (response) => {
-    console.log(response);
+    authUser({ variables: { accessToken: response.accessToken } })
   }
 
   return (
@@ -30,6 +40,7 @@ const App = () => {
         onSuccess={responseGoogle}
         onFailure={responseGoogle}
         cookiePolicy={'single_host_origin'}
+        className="absolute top-0 right-0"
       />
     </div>
   );

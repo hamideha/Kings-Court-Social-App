@@ -36,7 +36,7 @@ const schema = makeExecutableSchema({
 const server = new ApolloServer({
     schema,
     context: ({ req, res }) => {
-        console.log(req.headers['Authorization'])
+        // console.log(req.headers['Authorization'])
         return { req, res }
     },
 });

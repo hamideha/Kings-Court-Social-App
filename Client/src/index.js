@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
+import './index.css';
 import App from './App';
 
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ApolloProvider } from '@apollo/client/react';
-import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,8 +15,13 @@ const queryClient = new QueryClient({
   },
 });
 
-const client = new ApolloClient({
+const link = createHttpLink({
   uri: '/graphql',
+  credentials: 'same-origin'
+});
+
+const client = new ApolloClient({
+  link,
   cache: new InMemoryCache(),
   request: async operation => {
     operation.setContext({
