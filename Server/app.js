@@ -3,14 +3,15 @@ require('dotenv').config()
 const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
-var cookieParser = require('cookie-parser')
+var cookieParser = require('cookie-parser');
+const jwt = require('express-jwt');
 
 const { ApolloServer, makeExecutableSchema, AuthenticationError } = require('apollo-server-express');
 const { types, resolvers } = require('./schemas/index');
 
 const app = express();
 
-app.use(cookieParser(process.env.AUTH_SECRET))
+app.use(cookieParser())
 app.use(require("express-session")({
     secret: process.env.AUTH_SECRET,
     resave: false,
@@ -35,11 +36,11 @@ const schema = makeExecutableSchema({
 const server = new ApolloServer({
     schema,
     context: ({ req, res }) => {
-        // if (!req.headers.authorization) throw new AuthenticationError('you must be logged in');
+        console.log(req.headers['Authorization'])
         return { req, res }
     },
 });
-server.applyMiddleware({ app, path: '/graphql', cors: false, });
+server.applyMiddleware({ app, path: '/graphql' });
 
 app.listen({ port: 4000 }, () =>
     console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)

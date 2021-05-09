@@ -1,5 +1,4 @@
 'use strict';
-const jwt = require('jsonwebtoken');
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {

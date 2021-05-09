@@ -5,10 +5,6 @@ const jwt = require('jsonwebtoken');
 const { gql } = require('apollo-server-express');
 
 module.exports.userTypeDef = gql`
-type AuthResponse {
-  token: String
-  name: String
-}
 type User {
   firstName: String,
   lastName: String,
@@ -23,7 +19,6 @@ extend type Mutation {
   updateUser(firstName: String, lastName: String, email: String): User,
   deleteUser(id: Int): Boolean,
   addUser(firstName: String, lastName: String, email: String): User,
-  authUser(accessToken: String!): AuthResponse!
 }
   `;
 
@@ -57,33 +52,6 @@ module.exports.userResolver = {
         where: { id: args.id }
       })
       return deleted
-    },
-    authUser: async (obj, args, { req, res }) => {
-      req.body = {
-        ...req.body,
-        access_token: args.accessToken,
-      };
-      try {
-        // data contains the accessToken, refreshToken and profile from passport
-        const { data, info } = await authenticateGoogle(req, res);
-
-        if (data) {
-          const user = await User.prototype.upsertUser(data)
-
-          if (user) {
-            const token = jwt.sign({
-              userId: user[0].id,
-              email: user[0].email
-            }, process.env.AUTH_SECRET, { expiresIn: '1h' });
-            const cookie = res.cookie('token', token, { maxAge: 90000, httpOnly: true })
-
-            return { token }
-          }
-        }
-      }
-      catch (err) {
-        return err
-      }
     }
   }
 }
