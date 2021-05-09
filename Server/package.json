@@ -7,8 +7,7 @@
   "scripts": {
     "client": "cd ../Client && yarn start",
     "server": "nodemon app.js",
-    "build": "cd ../Client && yarn run build",
-    "dev": "concurrently --kill-others-on-fail \"yarn run server\" \"yarn run client\""
+    "build": "cd ../Client && yarn run build"
   },
   "dependencies": {
     "apollo-server-express": "^2.23.0",
