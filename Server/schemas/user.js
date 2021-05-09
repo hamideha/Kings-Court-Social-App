@@ -9,6 +9,7 @@ type User {
   firstName: String,
   lastName: String,
   email: String,
+  profilePicture: String,
   messages: [Message!]!
 }
 extend type Query {

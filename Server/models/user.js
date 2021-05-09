@@ -17,6 +17,13 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isEmail: true,
       }
+    },
+    profilePicture: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        isUrl: true
+      }
     }
   }, {
     modelName: 'User',
@@ -32,7 +39,8 @@ module.exports = (sequelize, DataTypes) => {
       defaults: {
         firstName: profile.name.givenName,
         lastName: profile.name.familyName,
-        email: profile.emails[0].value
+        email: profile.emails[0].value,
+        profilePicture: profile._json.picture || null
       }
     })
     return newUser
