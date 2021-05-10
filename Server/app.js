@@ -3,20 +3,15 @@ require('dotenv').config()
 const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
-var cookieParser = require('cookie-parser');
-const jwt = require('express-jwt');
+const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser');
 
-const { ApolloServer, makeExecutableSchema, AuthenticationError } = require('apollo-server-express');
+const { ApolloServer, makeExecutableSchema } = require('apollo-server-express');
 const { types, resolvers } = require('./schemas/index');
 
 const app = express();
 
 app.use(cookieParser())
-app.use(require("express-session")({
-    secret: process.env.AUTH_SECRET,
-    resave: false,
-    saveUninitialized: false
-}));
 app.use(passport.initialize())
 app.use(passport.session());
 
@@ -36,7 +31,7 @@ const schema = makeExecutableSchema({
 const server = new ApolloServer({
     schema,
     context: ({ req, res }) => {
-        // console.log(req.headers['Authorization'])
+        // if (!req.headers.authorization) throw new AuthenticationError('you must be logged in');
         return { req, res }
     },
 });

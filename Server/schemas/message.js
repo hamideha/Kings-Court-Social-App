@@ -4,18 +4,20 @@ const { gql } = require('apollo-server-express');
 
 module.exports.messageTypeDef = gql`
 type Message {
-  content: String,
-  likes: Int,
-  user: User!
+  content: String!,
+  likes: Int!,
+  createdAt: Date!,
+  user: User!,
+  id: Int!
 }
 extend type Query {
-  Messages: [Message],
-  Message(id: Int): Message 
+  Messages: [Message!]!,
+  Message(id: Int): Message!
 }
 extend type Mutation {
-  deleteMessage(id: Int): Boolean,
-  addMessage(content: String, userId: Int, likes: Int): Message,
-  likeMessage(id: Int): Int
+  deleteMessage(id: Int): Boolean!,
+  addMessage(content: String, userId: Int, likes: Int): Message!,
+  likeMessage(id: Int): Int!
 }
 `;
 

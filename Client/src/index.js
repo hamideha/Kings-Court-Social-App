@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import Store from './store/store'
 
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ApolloProvider } from '@apollo/client/react';
@@ -35,7 +36,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <QueryClientProvider client={queryClient}>
     <ApolloProvider client={client}>
-      <App />
+      <Store>
+        <App />
+      </Store>
     </ApolloProvider>
   </QueryClientProvider>,
   document.getElementById('root')

@@ -1,27 +1,16 @@
-import { gql, useQuery } from '@apollo/client';
+import { useState } from 'react'
 
 import Header from './components/header/header.component'
-
-const GET_MESSAGES = gql`
-  query Messages {
-    Messages{
-      content
-      user {
-        email
-        firstName
-        lastName
-      }
-    }
-  }
-`;
+import MessageContainer from './components/message-container/message-container.component'
 
 const App = () => {
-  // const { loading, error, data } = useQuery(GET_MESSAGES);
-
+  const [count, setCount] = useState(0)
   return (
     <div className="App">
       <Header />
-    </div>
+      <MessageContainer />
+      <button onClick={() => { setCount(count + 1) }}>Click</button>
+    </div >
   );
 }
 

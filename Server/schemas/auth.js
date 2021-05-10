@@ -1,13 +1,17 @@
 const { User } = require('../models/index')
 const { authenticateGoogle } = require('../auth/passport')
 const jwt = require('jsonwebtoken');
+const { AuthenticationError } = require('apollo-server-express');
 
 const { gql } = require('apollo-server-express');
 
 module.exports.authTypeDef = gql`
 type AuthResponse {
-  token: String
-  name: String
+  isLoggedIn: Boolean!
+  user: User
+}
+extend type Query {
+  isAuthed: AuthResponse!
 }
 extend type Mutation {
   authUser(accessToken: String!): User!,
@@ -16,6 +20,20 @@ extend type Mutation {
   `;
 
 module.exports.authResolver = {
+    Query: {
+        isAuthed: async (obj, args, { req, res }) => {
+            const token = req.cookies.token
+            if (token) {
+                try {
+                    const payload = jwt.verify(token, process.env.AUTH_SECRET)
+                    return { user: User.findByPk(payload.userId), isLoggedIn: true }
+                } catch (err) {
+                    return err
+                }
+            };
+            return { user: new AuthenticationError('Please login to continue using the website!'), isLoggedIn: false }
+        }
+    },
     Mutation: {
         authUser: async (obj, args, { req, res }) => {
             req.body = {
@@ -34,7 +52,7 @@ module.exports.authResolver = {
                             userId: user[0].id,
                             email: user[0].email
                         }, process.env.AUTH_SECRET, { expiresIn: '1h' });
-                        res.cookie('token', token, { maxAge: 90000, httpOnly: true })
+                        res.cookie('token', token, { maxAge: 1800000, httpOnly: true })
                         return user[0]
                     }
                 }
