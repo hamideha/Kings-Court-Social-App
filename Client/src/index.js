@@ -8,7 +8,6 @@ import Store from './store/store'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ApolloProvider } from '@apollo/client/react';
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
-import { offsetLimitPagination } from "@apollo/client/utilities";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,21 +28,20 @@ const client = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
-          PaginateMessages: offsetLimitPagination()
-          // PaginateMessages: {
-          //   keyArgs: false,
-          //   merge(existing, incoming) {
-          //     console.log(existing, incoming)
-          //     if (!incoming) return existing
-          //     if (!existing) return incoming // existing will be empty the first time 
+          PaginateMessages: {
+            keyArgs: false,
+            merge(existing, incoming) {
+              if (!incoming) return existing
+              if (!existing) return incoming
 
-          //     const { items, ...rest } = incoming;
-          //     let result = rest;
+              const { rows, ...rest } = incoming;
 
-          //     result.items = [...existing.items, ...incoming]; // Merge existing items with the items from incoming
-          //     console.log(result)
-          //     return result
-          //   }
+              let result = rest;
+              result.rows = [...existing.rows, ...rows];
+
+              return result
+            }
+          }
         }
       }
     }

@@ -10,8 +10,12 @@ type Message {
   user: User!,
   id: Int!
 }
+type PaginateMessages {
+    rows: [Message!]!,
+    hasMore: Boolean!
+}
 extend type Query {
-  PaginateMessages(limit: Int!, offset: Int!): [Message!]!
+  PaginateMessages(limit: Int!, offset: Int!): PaginateMessages!
   Messages: [Message!]!,
   Message(id: Int): Message!
 }
@@ -35,7 +39,8 @@ module.exports.messageResolver = {
                 offset: args.offset,
                 order: [['createdAt', 'ASC']]
             })
-            return data.rows
+
+            return { rows: data.rows, hasMore: args.offset < data.count - 1 }
         },
         Messages: async () => { return Message.findAll({ order: [['createdAt', 'ASC']] }) },
         Message: async (obj, args) => { return Message.findByPk(args.id) }
