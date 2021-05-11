@@ -1,4 +1,5 @@
 import { Fragment } from 'react'
+// import { Link } from 'react-router-dom'
 import { Menu, Transition } from '@headlessui/react'
 import { SignInButton, SignOutButton } from '../../auth/auth-buttons.component'
 
@@ -13,7 +14,7 @@ const Header = ({ isAuthed }) => {
     console.log(loading, data, error)
 
     return (
-        <div className="bg-gray-800">
+        <div className="bg-gray-800 sticky top-0">
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                 <div className="relative flex items-center justify-between h-16">
                     <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">

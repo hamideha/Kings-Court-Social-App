@@ -11,6 +11,7 @@ type Message {
   id: Int!
 }
 extend type Query {
+  PaginateMessages(limit: Int!, offset: Int!): [Message!]!
   Messages: [Message!]!,
   Message(id: Int): Message!
 }
@@ -28,7 +29,15 @@ module.exports.messageResolver = {
         }
     },
     Query: {
-        Messages: async () => { return Message.findAll() },
+        PaginateMessages: async (obj, args) => {
+            const data = await Message.findAndCountAll({
+                limit: args.limit,
+                offset: args.offset,
+                order: [['createdAt', 'ASC']]
+            })
+            return data.rows
+        },
+        Messages: async () => { return Message.findAll({ order: [['createdAt', 'ASC']] }) },
         Message: async (obj, args) => { return Message.findByPk(args.id) }
     },
     Mutation: {
