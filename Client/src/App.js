@@ -7,9 +7,9 @@ import { NewMessage } from './components/buttons/buttons.components'
 
 const App = () => {
   return (
-    <div className="App">
+    <div className="App h-screen flex flex-col overflow-hidden">
       <Header />
-      <div className="h-screen flex">
+      <div className="flex-1 flex overflow-hidden">
         <ChatContainer />
         <MessageContainer />
         <NewMessage />

@@ -18,11 +18,12 @@ const MessageContainer = () => {
 
     if (loading) {
         return <Spinner />
+
     }
 
     return (
         <div className="flex-1 flex flex-col bg-white overflow-hidden">
-            <div className="flex-1 overflow-y-scroll" onScroll={(e) => detectBottomScroll(e,
+            <div className="flex-1 overflow-y-auto" onScroll={(e) => detectBottomScroll(e,
                 async () => {
                     setIsLoadingMore(true)
                     await fetchMore({
@@ -32,8 +33,11 @@ const MessageContainer = () => {
                 }
             )}>
                 {data && data.PaginateMessages && data.PaginateMessages.rows.map(message => {
-                    return <MessageCard key={message.id} message={message} user={message.user} />
+                    return (
+                        <MessageCard key={message.id} message={message} user={message.user} />
+                    )
                 })}
+                {isLoadingMore && <Spinner />}
             </div>
         </div >
     )
