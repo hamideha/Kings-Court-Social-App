@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import Header from './components/header/header.component'
 import ChatContainer from './components/chat-container/chat-container.component'
 import MessageContainer from './components/message-container/message-container.component'
-import { NewMessage } from './components/buttons/buttons.components'
+import { NewMessage } from './components/new-message/new-message.components'
 
 const App = () => {
   return (

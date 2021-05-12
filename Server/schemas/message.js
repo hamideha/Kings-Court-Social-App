@@ -21,7 +21,7 @@ extend type Query {
 }
 extend type Mutation {
   deleteMessage(id: Int): Boolean!,
-  addMessage(content: String, userId: Int, likes: Int): Message!,
+  addMessage(content: String, userId: Int): Message!,
   likeMessage(id: Int): Int!
 }
 `;
@@ -37,7 +37,7 @@ module.exports.messageResolver = {
             const data = await Message.findAndCountAll({
                 limit: args.limit,
                 offset: args.offset,
-                order: [['createdAt', 'ASC']]
+                order: [['createdAt', 'DESC']]
             })
 
             return { rows: data.rows, hasMore: args.offset < data.count - 1 }

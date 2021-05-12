@@ -18,3 +18,13 @@ query PaginateMessages($limit: Int!, $offset: Int!) {
     }
 }
 `;
+
+export const NEW_MESSAGE = gql`
+mutation addMessage($content: String!, $userId: Int!) {
+  addMessage(content: $content, userId: $userId) {
+    id
+    content
+    createdAt
+  }
+}
+`;
