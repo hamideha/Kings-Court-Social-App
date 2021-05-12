@@ -7,7 +7,8 @@ import Store from './store/store'
 
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ApolloProvider } from '@apollo/client/react';
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
+import { onError } from "@apollo/client/link/error";
+import { ApolloClient, InMemoryCache, createHttpLink, from } from '@apollo/client'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,13 +18,23 @@ const queryClient = new QueryClient({
   },
 });
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.map(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
 const link = createHttpLink({
   uri: '/graphql',
   credentials: 'same-origin'
 });
 
 const client = new ApolloClient({
-  link,
+  link: from([errorLink, link]),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
