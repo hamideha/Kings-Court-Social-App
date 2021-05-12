@@ -1,8 +1,5 @@
-export const detectScrollEnd = (e) => {
-    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-    if (bottom) {
-        console.log("At The Bottom"); //Add in what you want here
+export const detectBottomScroll = ({ target }, callback) => {
+    if (target.offsetHeight + target.scrollTop >= target.scrollHeight) {
+        callback()
     }
-
-    return bottom
 }

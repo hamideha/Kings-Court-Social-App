@@ -1,27 +1,11 @@
 import { useState } from 'react'
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import { detectBottomScroll } from '../../utils/detectScroll'
+
 import MessageCard from '../message-card/message-card.components'
 import Spinner from '../spinner/spinner.components'
-import { detectScrollEnd } from '../../utils/detectScroll'
 
-const GET_PAGINATED_MESSAGES = gql`
-query PaginateMessages($limit: Int!, $offset: Int!) {
-    PaginateMessages(limit: $limit, offset: $offset){
-        hasMore
-        rows {
-            id
-            createdAt
-            content
-            likes
-            user {
-                firstName
-                lastName
-                profilePicture
-            }
-        }
-    }
-}
-`;
+import { GET_PAGINATED_MESSAGES } from '../../queries/message.queries'
 
 const MessageContainer = () => {
     const [isLoadingMore, setIsLoadingMore] = useState(false)
@@ -37,22 +21,21 @@ const MessageContainer = () => {
     }
 
     return (
-        <div className="grid grid-cols-1 overflow-y-scroll">
-            {data && data.PaginateMessages && data.PaginateMessages.rows.map(message => {
-                return <MessageCard key={message.id} message={message} user={message.user} />
-            })}
-            {data && data.PaginateMessages && data.PaginateMessages.hasMore &&
-                <button onClick={async () => {
+        <div className="flex-1 flex flex-col bg-white overflow-hidden">
+            <div className="flex-1 overflow-y-scroll" onScroll={(e) => detectBottomScroll(e,
+                async () => {
                     setIsLoadingMore(true)
                     await fetchMore({
                         variables: { offset: data.PaginateMessages.rows.length }
                     })
                     setIsLoadingMore(false)
-                }}>
-                    Click ME FOR MORE
-            </button>
-            }
-        </div>
+                }
+            )}>
+                {data && data.PaginateMessages && data.PaginateMessages.rows.map(message => {
+                    return <MessageCard key={message.id} message={message} user={message.user} />
+                })}
+            </div>
+        </div >
     )
 }
 

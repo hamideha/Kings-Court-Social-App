@@ -1,42 +1,7 @@
 // import { useEffect, useState } from 'react'
 import { Context } from '../store/store'
-import { gql, useQuery, useMutation } from '@apollo/client';
-
-// const GET_AUTH = gql`
-//   query isAuthed {
-//     isAuthed{
-//       firstName
-//       lastName
-//       email
-//       profilePicture
-//       messages {
-//           content
-//           likes
-//         }
-//       }
-//     }
-// `;
-
-const AUTH_USER = gql`
-mutation authUser($accessToken: String!) {
-  authUser(accessToken: $accessToken) {
-    firstName
-    lastName
-    email
-    profilePicture
-    messages {
-      content
-      likes
-    }
-  }
-}
-`;
-
-const LOGOUT_USER = gql`
-mutation logoutUser {
-  logoutUser
-}
-`;
+import { useQuery, useMutation } from '@apollo/client';
+import { AUTH_USER, LOGOUT_USER } from '../queries/auth.queries'
 
 const useAuth = () => {
   const [authUser, { data, loading, error, called }] = useMutation(AUTH_USER);
