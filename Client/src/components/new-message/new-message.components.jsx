@@ -1,12 +1,16 @@
-import { useState } from 'react'
-import { useMutation, gql } from '@apollo/client';
+import { useState, useEffect } from 'react'
+import { useMutation } from '@apollo/client';
 import { NEW_MESSAGE } from '../../queries/message.queries'
 
 import { AddButton, SubmitModalButton } from '../buttons/buttons.component'
 import { TextArea } from '../fields/fields.component'
 import Modal from '../modal/modal.component'
 
-export const NewMessage = () => {
+export const NewMessage = ({ subscribeToNew }) => {
+    // useEffect(() => {
+    //     subscribeToNew()
+    // })
+
     const [addMessage, { data, loading, error }] = useMutation(NEW_MESSAGE)
 
     // cache.modify({
@@ -30,7 +34,6 @@ export const NewMessage = () => {
     console.log(data, loading, error)
     const [newMessage, setNewMessage] = useState('')
     const [isOpen, setIsOpen] = useState(false)
-    console.log(newMessage.length)
 
     const handleSubmit = () => {
         addMessage({ variables: { content: newMessage, userId: 8 } });

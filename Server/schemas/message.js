@@ -14,8 +14,8 @@ type Message {
   id: Int!
 }
 type PaginateMessages {
-    rows: [Message!]!,
-    hasMore: Boolean!
+  rows: [Message!]!,
+  hasMore: Boolean!
 }
 extend type Query {
   PaginateMessages(limit: Int!, offset: Int!): PaginateMessages!
@@ -28,7 +28,7 @@ extend type Mutation {
   likeMessage(id: Int): Int!
 }
 extend type Subscription {
-  messageAdded: Message!  
+  PaginateMessages(limit: Int!, offset: Int!): PaginateMessages!
 }
 `;
 
@@ -72,13 +72,18 @@ module.exports.messageResolver = {
         }
     },
     Subscription: {
-        messageAdded: {
+        PaginateMessages: {
             subscribe: () => {
                 return pubsub.asyncIterator(['ADDED_MESSAGE'])
             },
             resolve: async (payload, args, context, info) => {
-                const data = await payload.addMessage
-                return data;
+                const addMessage = await payload.addMessage
+                const data = await Message.findAndCountAll({
+                    limit: args.limit,
+                    offset: args.offset,
+                    order: [['createdAt', 'DESC']]
+                })
+                return { rows: data.rows, hasMore: args.offset < data.count - 1 }
             },
         }
     }

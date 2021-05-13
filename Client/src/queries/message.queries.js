@@ -1,5 +1,24 @@
 import { gql } from '@apollo/client';
 
+export const SUBSCRIBE_PAGINATED_MESSAGES = gql`
+subscription PaginateMessages($limit: Int!, $offset: Int!) {
+    PaginateMessages(limit: $limit, offset: $offset){
+        hasMore
+        rows {
+            id
+            createdAt
+            content
+            likes
+            user {
+                firstName
+                lastName
+                profilePicture
+            }
+        }
+    }
+}
+`;
+
 export const GET_PAGINATED_MESSAGES = gql`
 query PaginateMessages($limit: Int!, $offset: Int!) {
     PaginateMessages(limit: $limit, offset: $offset){

@@ -8,6 +8,7 @@ import Store from './store/store'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ApolloProvider } from '@apollo/client/react';
 import { onError } from "@apollo/client/link/error";
+import { WebSocketLink } from '@apollo/client/link/ws';
 import { ApolloClient, InMemoryCache, createHttpLink, from } from '@apollo/client'
 
 const queryClient = new QueryClient({
@@ -28,13 +29,20 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
+const wsLink = new WebSocketLink({
+  uri: 'ws://localhost:4000/graphql',
+  options: {
+    reconnect: true
+  }
+});
+
 const link = createHttpLink({
   uri: '/graphql',
   credentials: 'same-origin'
 });
 
 const client = new ApolloClient({
-  link: from([errorLink, link]),
+  link: from([wsLink, link, errorLink]),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
