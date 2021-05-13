@@ -1,6 +1,9 @@
 const { Message, User } = require('../models/index')
 
 const { gql } = require('apollo-server-express');
+const { PubSub } = require('apollo-server-express')
+
+const pubsub = new PubSub()
 
 module.exports.messageTypeDef = gql`
 type Message {
@@ -23,6 +26,9 @@ extend type Mutation {
   deleteMessage(id: Int): Boolean!,
   addMessage(content: String, userId: Int): Message!,
   likeMessage(id: Int): Int!
+}
+extend type Subscription {
+  messageAdded: Message!  
 }
 `;
 
@@ -50,6 +56,7 @@ module.exports.messageResolver = {
         // args is the arguments passed in your query/mutation
         addMessage: async (obj, args) => {
             const created = Message.create({ ...args })
+            pubsub.publish('ADDED_MESSAGE', { addMessage: created });
             return created
         },
         deleteMessage: async (obj, args) => {
@@ -62,6 +69,17 @@ module.exports.messageResolver = {
             const liked = await Message.findByPk(args.id);
             const result = await liked.increment('likes');
             return result.likes
+        }
+    },
+    Subscription: {
+        messageAdded: {
+            subscribe: () => {
+                return pubsub.asyncIterator(['ADDED_MESSAGE'])
+            },
+            resolve: async (payload, args, context, info) => {
+                const data = await payload.addMessage
+                return data;
+            },
         }
     }
 }
