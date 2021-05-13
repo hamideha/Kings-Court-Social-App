@@ -1,16 +1,16 @@
 import { useState } from 'react'
-import { useQuery, useSubscription } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { detectBottomScroll } from '../../utils/detectScroll'
 
 import MessageCard from '../message-card/message-card.components'
 import { NewMessage } from '../new-message/new-message.components'
 import Spinner from '../spinner/spinner.components'
 
-import { GET_PAGINATED_MESSAGES, SUBSCRIBE_PAGINATED_MESSAGES } from '../../queries/message.queries'
+import { GET_PAGINATED_MESSAGES, SUBSCRIBE_NEW_MESSAGE } from '../../queries/message.queries'
 
 const MessageContainer = () => {
     const [isLoadingMore, setIsLoadingMore] = useState(false)
-    const { loading, data, fetchMore } = useQuery(GET_PAGINATED_MESSAGES, {
+    const { loading, data, fetchMore, subscribeToMore } = useQuery(GET_PAGINATED_MESSAGES, {
         variables: {
             offset: 0,
             limit: 10
@@ -21,7 +21,6 @@ const MessageContainer = () => {
         return (
             <>
                 <Spinner />
-                <NewMessage />
             </>
         )
     }
@@ -43,7 +42,29 @@ const MessageContainer = () => {
                     )
                 })}
                 {isLoadingMore && <Spinner />}
-                <NewMessage />
+                <NewMessage
+                    subscribeToNewComments={() =>
+                        subscribeToMore({
+                            document: SUBSCRIBE_NEW_MESSAGE,
+                            variables: { offset: data.PaginateMessages.rows.length, limit: 10 },
+                            updateQuery: (prev, { subscriptionData }) => {
+                                if (!subscriptionData.data) return prev;
+                                const newMessage = subscriptionData.data.messageAdded;
+                                const exists = prev.PaginateMessages.rows.find(
+                                    ({ id }) => id === newMessage.id
+                                );
+                                if (exists) return prev;
+
+                                return Object.assign({}, prev, { newField: true }, {
+                                    PaginateMessages: {
+                                        rows: [newMessage],
+                                        hasMore: prev.PaginateMessages.hasMore,
+                                    }
+                                });
+                            }
+                        })
+                    }
+                />
             </div>
         </div >
     )

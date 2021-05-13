@@ -35,11 +35,12 @@ const client = new ApolloClient({
                         merge(existing, incoming) {
                             if (!incoming) return existing
                             if (!existing) return incoming
-
+                            console.log(existing, incoming)
                             const { rows, ...rest } = incoming;
 
                             let result = rest;
-                            result.rows = [...existing.rows, ...rows];
+                            result.rows = rows.length === 1 ? [...rows, ...existing.rows] : [...existing.rows, ...rows]
+                            // THIS IS A TEMPORARY SOLUTION. Its hardcoded that if the incomingrows is only 1 so essentially a new message, then append it to the beginning of the array. What happens if duringpagination on the last page there is onyl 1 row, then it will be pushed above the previousfetch.
 
                             return result
                         }

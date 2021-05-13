@@ -6,30 +6,12 @@ import { AddButton, SubmitModalButton } from '../buttons/buttons.component'
 import { TextArea } from '../fields/fields.component'
 import Modal from '../modal/modal.component'
 
-export const NewMessage = ({ subscribeToNew }) => {
-    // useEffect(() => {
-    //     subscribeToNew()
-    // })
+export const NewMessage = ({ subscribeToNewComments }) => {
+    useEffect(() => {
+        subscribeToNewComments()
+    })
 
     const [addMessage, { data, loading, error }] = useMutation(NEW_MESSAGE)
-
-    // cache.modify({
-    //     fields: {
-    //         PaginateMessages({ rows }) {
-    //             const newMessageRef = cache.writeFragment({
-    //                 data: addMessage,
-    //                 fragment: gql`
-    //                     fragment NewMessage on Message {
-    //                         id
-    //                         content
-    //                         createdAt
-    //                     }`
-    //             });
-    //             console.log([...rows, newMessageRef])
-    //             return [...rows, newMessageRef];
-    //         }
-    //     }
-    // });
 
     console.log(data, loading, error)
     const [newMessage, setNewMessage] = useState('')
