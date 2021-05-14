@@ -30,6 +30,7 @@
   "devDependencies": {
     "@craco/craco": "^6.1.2",
     "@tailwindcss/forms": "^0.3.2",
+    "@tailwindcss/typography": "^0.4.0",
     "autoprefixer": "^9",
     "concurrently": "^6.1.0",
     "eslint-config-react-app": "^6.0.0",
