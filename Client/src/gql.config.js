@@ -49,7 +49,6 @@ const client = new ApolloClient({
                         merge(existing, incoming) {
                             if (!incoming) return existing
                             if (!existing) return incoming
-                            console.log(existing, incoming)
                             const { rows, ...rest } = incoming;
 
                             let result = rest;

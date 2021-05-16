@@ -11,7 +11,7 @@ function classNames(...classes) {
 }
 
 const Header = () => {
-    const { user } = useStore()
+    const { currentUser } = useStore()
 
     return (
         <div className="bg-gray-800 sticky top-0">
@@ -32,12 +32,12 @@ const Header = () => {
                             {({ open }) => (
                                 <>
                                     <div>
-                                        {user && user.authUser ? <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                                        {currentUser && currentUser.authUser ? <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
 
                                             <span className="sr-only">Open user menu</span>
                                             <img
                                                 className="h-8 w-8 rounded-full"
-                                                src={user.authUser.profilePicture || DefaultProfile}
+                                                src={currentUser.authUser.profilePicture || DefaultProfile}
                                                 alt="Profile"
                                             />
                                         </Menu.Button> : <SignInButton />}

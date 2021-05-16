@@ -1,15 +1,12 @@
 import { useGoogleLogout, useGoogleLogin } from 'react-google-login';
-import { useStore } from '../store/global-store'
 
 import useAuth, { useLogout } from '../auth/useAuth.hook'
 
 export const SignInButton = () => {
-  const { loading, error, data, authUser } = useAuth();
-  const { login } = useStore()
+  const { authenticate } = useAuth();
 
-  const onSuccess = (response) => {
-    authUser({ variables: { accessToken: response.accessToken } })
-    login(data)
+  const onSuccess = async (response) => {
+    authenticate({ variables: { accessToken: response.accessToken } })
   }
 
   const onFailure = () => {
@@ -33,11 +30,9 @@ export const SignInButton = () => {
 
 
 export const SignOutButton = ({ className }) => {
-  const { logoutUser, client } = useLogout()
-  const { logout } = useStore()
+  const { logout } = useLogout()
 
   const onLogoutSuccess = () => {
-    logoutUser().then(() => client.resetStore())
     logout()
   }
 
