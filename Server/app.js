@@ -15,11 +15,11 @@ const { SubscriptionServer } = require('subscriptions-transport-ws');
 
 const app = express();
 
-app.use(cookieParser())
+app.use(cookieParser(process.env.AUTH_SECRET))
 app.use(passport.initialize())
 app.use(passport.session());
 
-app.use(cors({ origin: "*", credentials: true }))
+app.use(cors({ origin: "http://localhost:3000", credentials: true }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -45,7 +45,7 @@ const server = new ApolloServer({
 
 //config taken from Apollo docs: https://www.apollographql.com/docs/apollo-server/data/subscriptions/
 //and https://github.com/apollographql/subscriptions-transport-ws
-server.applyMiddleware({ app, path: '/graphql' });
+server.applyMiddleware({ app, path: '/graphql', cors: false });
 const httpServer = createServer(app);
 
 new SubscriptionServer(

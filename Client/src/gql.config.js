@@ -22,7 +22,7 @@ export const wsLink = new WebSocketLink({
 
 export const httpLink = createHttpLink({
     uri: 'http://localhost:4000/graphql',
-    credentials: 'same-origin'
+    credentials: 'include'
 });
 
 // See split documentation here: https://www.apollographql.com/docs/react/data/subscriptions/#5-authenticate-over-websocket-optional

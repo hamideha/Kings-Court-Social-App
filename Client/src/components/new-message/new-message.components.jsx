@@ -19,7 +19,7 @@ export const NewMessage = ({ subscribeToNewComments }) => {
     const [isOpen, setIsOpen] = useState(false)
 
     const handleSubmit = () => {
-        addMessage({ variables: { content: newMessage, userId: currentUser.authUser.id } });
+        addMessage({ variables: { content: newMessage, userId: currentUser?.authUser?.id } });
         setIsOpen(false);
         setNewMessage('');
     }
@@ -31,15 +31,13 @@ export const NewMessage = ({ subscribeToNewComments }) => {
             </div>
 
             <Modal isOpen={isOpen} setIsOpen={setIsOpen} title="New Take">
-                <form>
-                    <TextArea value={newMessage} onChange={(e) => setNewMessage(e.target.value)} required />
-                    <SubmitModalButton
-                        onClick={handleSubmit}
-                        disabled={newMessage.length < 1}
-                    >
-                        Submit
-                    </SubmitModalButton>
-                </form>
+                <TextArea value={newMessage} onChange={(e) => setNewMessage(e.target.value)} required />
+                <SubmitModalButton
+                    onClick={handleSubmit}
+                    disabled={newMessage.length < 1 || newMessage.length > 247}
+                >
+                    Submit
+                </SubmitModalButton>
             </Modal>
         </>
     )

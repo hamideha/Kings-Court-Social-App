@@ -1,13 +1,14 @@
 const { rule, shield } = require('graphql-shield')
 
 const isAuthenticated = rule({ cache: 'contextual' })(
-    async (parent, args, ctx, info) => {
-        return ctx.user
+    async (parent, args, { req }, info) => {
+        if (req.cookies.token) return true
     },
 )
 
 const permissions = shield({
     Mutation: {
+        addMessage: isAuthenticated,
         deleteMessage: isAuthenticated,
         likeMessage: isAuthenticated,
     },
