@@ -3,6 +3,7 @@ import { gql } from '@apollo/client';
 export const AUTH_USER = gql`
 mutation authUser($accessToken: String!) {
   authUser(accessToken: $accessToken) {
+    id
     firstName
     lastName
     email
@@ -24,6 +25,7 @@ mutation logoutUser {
 export const GET_AUTH = gql`
   query isAuthed {
     isAuthed{
+      id
       firstName
       lastName
       email

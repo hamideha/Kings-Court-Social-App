@@ -2,8 +2,7 @@ import { Fragment } from 'react'
 // import { Link } from 'react-router-dom'
 import { Menu, Transition } from '@headlessui/react'
 import { SignInButton, SignOutButton } from '../../auth/auth-buttons.component'
-
-import useAuth, { useLogout } from '../../auth/useAuth.hook'
+import { useStore } from '../../store/global-store'
 
 import DefaultProfile from '../../assets/default-profile.png'
 
@@ -12,10 +11,7 @@ function classNames(...classes) {
 }
 
 const Header = () => {
-    const { loading, error, data, authUser } = useAuth();
-    const { logoutUser, client } = useLogout()
-
-    console.log(data)
+    const { user } = useStore()
 
     return (
         <div className="bg-gray-800 sticky top-0">
@@ -36,15 +32,15 @@ const Header = () => {
                             {({ open }) => (
                                 <>
                                     <div>
-                                        {data ? <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                                        {user && user.authUser ? <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
 
                                             <span className="sr-only">Open user menu</span>
                                             <img
                                                 className="h-8 w-8 rounded-full"
-                                                src={data.authUser.profilePicture || DefaultProfile}
+                                                src={user.authUser.profilePicture || DefaultProfile}
                                                 alt="Profile"
                                             />
-                                        </Menu.Button> : <SignInButton authUser={authUser} />}
+                                        </Menu.Button> : <SignInButton />}
                                     </div>
                                     <Transition
                                         show={open}
@@ -93,7 +89,6 @@ const Header = () => {
                                                             active ? 'bg-gray-100' : '',
                                                             'block px-4 py-2 text-sm text-gray-700 w-full text-left'
                                                         )}
-                                                        logoutUser={logoutUser} client={client}
                                                     />
                                                 )}
                                             </Menu.Item>
