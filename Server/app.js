@@ -4,11 +4,12 @@ const express = require('express');
 const { createServer } = require('http');
 const cors = require('cors');
 const passport = require('passport');
-const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser');
 
-const { ApolloServer, makeExecutableSchema } = require('apollo-server-express');
 const { types, resolvers } = require('./schemas/index');
+const permissions = require('./schemas/schema-shields')
+const { ApolloServer, makeExecutableSchema } = require('apollo-server-express');
+const { applyMiddleware } = require('graphql-middleware')
 const { execute, subscribe } = require('graphql');
 const { SubscriptionServer } = require('subscriptions-transport-ws');
 
@@ -26,10 +27,13 @@ app.get('/api', (req, res) => {
     res.json({ hello: "World" })
 })
 
-const schema = makeExecutableSchema({
-    typeDefs: types,
-    resolvers: resolvers,
-});
+const schema = applyMiddleware(
+    makeExecutableSchema({
+        typeDefs: types,
+        resolvers: resolvers,
+    }),
+    permissions
+);
 
 const server = new ApolloServer({
     schema,
@@ -38,13 +42,22 @@ const server = new ApolloServer({
         return { req, res }
     },
 });
+
+//config taken from Apollo docs: https://www.apollographql.com/docs/apollo-server/data/subscriptions/
+//and https://github.com/apollographql/subscriptions-transport-ws
 server.applyMiddleware({ app, path: '/graphql' });
 const httpServer = createServer(app);
-server.installSubscriptionHandlers(httpServer);
 
-// app.listen({ port: 4000 }, () =>
-//     console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
-// )
+new SubscriptionServer(
+    {
+        execute,
+        subscribe,
+        schema,
+    },
+    {
+        server: httpServer
+    }
+);
 
 httpServer.listen(4000, () => {
     console.log(`Server ready at http://localhost:4000${server.graphqlPath}`);

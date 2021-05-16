@@ -10,7 +10,7 @@ const MessageCard = ({ user, message }) => {
                     <div className="flex items-center">
                         <img className="w-10 h-10 rounded-full mr-4" src={user.profilePicture || DefaultProfile} alt="Profile" />
                         <div className="text-sm">
-                            <p className="text-black leading-none font-extrabold prose">{user.firstName + ' ' + user.lastName}</p>
+                            <p className="text-black leading-none font-semibold prose">{user.firstName + ' ' + user.lastName}</p>
                             <p className="text-grey-dark font-light prose">{getFormatted(message.createdAt)}</p>
                         </div>
                     </div>

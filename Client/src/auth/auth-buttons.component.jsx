@@ -1,10 +1,6 @@
 import { useGoogleLogout, useGoogleLogin } from 'react-google-login';
-import useAuth, { useLogout } from '../auth/useAuth.hook'
 
-export const SignInButton = ({ refetch }) => {
-  const { loading, error, data, authUser } = useAuth();
-  console.log(loading, error, data)
-
+export const SignInButton = ({ authUser }) => {
   const onSuccess = (response) => {
     authUser({ variables: { accessToken: response.accessToken } })
   }
@@ -29,10 +25,7 @@ export const SignInButton = ({ refetch }) => {
 }
 
 
-export const SignOutButton = ({ refetch }) => {
-  const { loading, error, data, logoutUser, client } = useLogout();
-  console.log(loading, error, data)
-
+export const SignOutButton = ({ logoutUser, client, className }) => {
   const onLogoutSuccess = () => {
     logoutUser().then(() => client.resetStore())
   }
@@ -49,7 +42,7 @@ export const SignOutButton = ({ refetch }) => {
 
   return (
     <button onClick={signOut}
-      className="whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+      className={className}>
       Logout
     </button>
   )

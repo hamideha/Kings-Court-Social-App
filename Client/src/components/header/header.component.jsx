@@ -3,15 +3,19 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { SignInButton, SignOutButton } from '../../auth/auth-buttons.component'
 
-import useAuth from '../../auth/useAuth.hook'
+import useAuth, { useLogout } from '../../auth/useAuth.hook'
+
+import DefaultProfile from '../../assets/default-profile.png'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-const Header = ({ isAuthed }) => {
-    const { loading, error, data } = useAuth();
-    console.log(loading, data, error)
+const Header = () => {
+    const { loading, error, data, authUser } = useAuth();
+    const { logoutUser, client } = useLogout()
+
+    console.log(data)
 
     return (
         <div className="bg-gray-800 sticky top-0">
@@ -32,16 +36,15 @@ const Header = ({ isAuthed }) => {
                             {({ open }) => (
                                 <>
                                     <div>
-                                        {isAuthed ? <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                                        {data ? <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
 
                                             <span className="sr-only">Open user menu</span>
                                             <img
                                                 className="h-8 w-8 rounded-full"
-                                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                alt=""
+                                                src={data.authUser.profilePicture || DefaultProfile}
+                                                alt="Profile"
                                             />
-                                        </Menu.Button> : <SignInButton />}
-                                        <SignOutButton />
+                                        </Menu.Button> : <SignInButton authUser={authUser} />}
                                     </div>
                                     <Transition
                                         show={open}
@@ -63,7 +66,7 @@ const Header = ({ isAuthed }) => {
                                                         href="/"
                                                         className={classNames(
                                                             active ? 'bg-gray-100' : '',
-                                                            'block px-4 py-2 text-sm text-gray-700'
+                                                            'block px-4 py-2 text-sm text-gray-700 w-full text-left'
                                                         )}
                                                     >
                                                         Your Profile
@@ -76,7 +79,7 @@ const Header = ({ isAuthed }) => {
                                                         href="/"
                                                         className={classNames(
                                                             active ? 'bg-gray-100' : '',
-                                                            'block px-4 py-2 text-sm text-gray-700'
+                                                            'block px-4 py-2 text-sm text-gray-700 w-full text-left'
                                                         )}
                                                     >
                                                         Settings
@@ -85,15 +88,13 @@ const Header = ({ isAuthed }) => {
                                             </Menu.Item>
                                             <Menu.Item>
                                                 {({ active }) => (
-                                                    <a
-                                                        href="/"
+                                                    <SignOutButton
                                                         className={classNames(
                                                             active ? 'bg-gray-100' : '',
-                                                            'block px-4 py-2 text-sm text-gray-700'
+                                                            'block px-4 py-2 text-sm text-gray-700 w-full text-left'
                                                         )}
-                                                    >
-                                                        Sign out
-                                                    </a>
+                                                        logoutUser={logoutUser} client={client}
+                                                    />
                                                 )}
                                             </Menu.Item>
                                         </Menu.Items>

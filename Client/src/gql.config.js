@@ -1,6 +1,7 @@
 import { onError } from "@apollo/client/link/error";
 import { WebSocketLink } from '@apollo/client/link/ws';
-import { ApolloClient, InMemoryCache, createHttpLink, from } from '@apollo/client'
+import { getMainDefinition } from '@apollo/client/utilities';
+import { ApolloClient, InMemoryCache, createHttpLink, split } from '@apollo/client'
 
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
@@ -19,13 +20,26 @@ export const wsLink = new WebSocketLink({
     }
 });
 
-export const link = createHttpLink({
-    uri: '/graphql',
+export const httpLink = createHttpLink({
+    uri: 'http://localhost:4000/graphql',
     credentials: 'same-origin'
 });
 
+// See split documentation here: https://www.apollographql.com/docs/react/data/subscriptions/#5-authenticate-over-websocket-optional
+const link = split(
+    ({ query }) => {
+        const definition = getMainDefinition(query);
+        return (
+            definition.kind === 'OperationDefinition' &&
+            definition.operation === 'subscription'
+        );
+    },
+    errorLink.concat(wsLink),
+    errorLink.concat(httpLink)
+);
+
 const client = new ApolloClient({
-    link: from([wsLink, link, errorLink]),
+    link: link,
     cache: new InMemoryCache({
         typePolicies: {
             Query: {
@@ -40,7 +54,7 @@ const client = new ApolloClient({
 
                             let result = rest;
                             result.rows = rows.length === 1 ? [...rows, ...existing.rows] : [...existing.rows, ...rows]
-                            // THIS IS A TEMPORARY SOLUTION. Its hardcoded that if the incomingrows is only 1 so essentially a new message, then append it to the beginning of the array. What happens if duringpagination on the last page there is onyl 1 row, then it will be pushed above the previousfetch.
+                            // THIS IS A TEMPORARY SOLUTION. Its hardcoded that if the incomingrows is only 1 so essentially a new message, then append it to the beginning of the array. What happens if during pagination on the last page there is only 1 row, then it will be pushed above the previous fetch.
 
                             return result
                         }

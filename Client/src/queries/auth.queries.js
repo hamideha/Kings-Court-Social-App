@@ -28,10 +28,6 @@ export const GET_AUTH = gql`
       lastName
       email
       profilePicture
-      messages {
-          content
-          likes
-        }
       }
     }
 `;
