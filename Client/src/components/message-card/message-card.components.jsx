@@ -14,7 +14,7 @@ const MessageCard = ({ user, message }) => {
                             <p className="text-grey-dark font-light prose">{getFormatted(message.createdAt)}</p>
                         </div>
                     </div>
-                    <p className="text-grey-darker text-base mt-4">{message.content}</p>
+                    <p className="text-grey-darker text-base mt-4 break-words">{message.content}</p>
                 </div>
             </div>
         </>

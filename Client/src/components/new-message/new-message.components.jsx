@@ -5,6 +5,7 @@ import { useStore } from '../../store/global-store'
 
 import { AddButton, SubmitModalButton } from '../buttons/buttons.component'
 import { TextArea } from '../fields/fields.component'
+import ProgressCircle from '../progress/progress.component'
 import Modal from '../modal/modal.component'
 
 export const NewMessage = ({ subscribeToNewComments }) => {
@@ -32,12 +33,15 @@ export const NewMessage = ({ subscribeToNewComments }) => {
 
             <Modal isOpen={isOpen} setIsOpen={setIsOpen} title="New Take">
                 <TextArea value={newMessage} onChange={(e) => setNewMessage(e.target.value)} required />
-                <SubmitModalButton
-                    onClick={handleSubmit}
-                    disabled={newMessage.length < 1 || newMessage.length > 247}
-                >
-                    Submit
-                </SubmitModalButton>
+                <div className="flex justify-between items-center">
+                    <SubmitModalButton
+                        onClick={handleSubmit}
+                        disabled={newMessage.length < 1 || newMessage.length > 248}
+                    >
+                        Submit
+                    </SubmitModalButton>
+                    <ProgressCircle progress={newMessage.length} maxValue={248} text={`${newMessage.length}/${248}`} />
+                </div>
             </Modal>
         </>
     )
