@@ -16,6 +16,8 @@ export const SignInButton = () => {
   const { signIn } = useGoogleLogin({
     onSuccess,
     onFailure,
+    approvalPrompt: 'force',
+    prompt: 'consent',
     clientId: "192080241061-q9ih3auadn4u0v6nckcr6jfkv6kt7dr8.apps.googleusercontent.com",
     isSignedIn: true
   });

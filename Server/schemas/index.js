@@ -2,6 +2,7 @@ const { gql } = require('apollo-server-express');
 const { GraphQLScalarType, Kind } = require('graphql');
 const { userTypeDef, userResolver } = require('./user')
 const { messageTypeDef, messageResolver } = require('./message')
+const { likesTypeDef, likesResolver } = require('./likedPosts')
 const { authTypeDef, authResolver } = require('./auth')
 const merge = require('deepmerge')
 
@@ -42,5 +43,5 @@ const resolvers = {
   Date: dateScalar
 };
 
-module.exports.types = [typeDefs, userTypeDef, messageTypeDef, authTypeDef]
-module.exports.resolvers = merge.all([userResolver, messageResolver, authResolver, resolvers])
+module.exports.types = [typeDefs, userTypeDef, messageTypeDef, likesTypeDef, authTypeDef]
+module.exports.resolvers = merge.all([userResolver, messageResolver, authResolver, likesResolver, resolvers])

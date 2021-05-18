@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = (models) => {
     User.hasMany(models.Message, { foreignKey: 'userId', as: 'messages' })
+    User.hasMany(models.LikedPosts, { foreignKey: 'userId', as: 'likedPosts' });
   }
 
   User.prototype.upsertUser = ({ profile }) => {

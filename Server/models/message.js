@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Message.associate = (models) => {
     Message.belongsTo(models.User, { foreignKey: 'userId' })
+    Message.hasMany(models.LikedPosts, { foreignKey: "messageId", as: 'likedPosts' });
   }
 
   return Message;

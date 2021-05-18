@@ -34,7 +34,8 @@ Object.keys(db).forEach(modelName => {
 
 const models = {
   User: require('./user')(sequelize, Sequelize.DataTypes),
-  Message: require('./message')(sequelize, Sequelize.DataTypes)
+  Message: require('./message')(sequelize, Sequelize.DataTypes),
+  LikedPost: require('./likedPosts')(sequelize, Sequelize.DataTypes)
 }
 
 db.models = models

@@ -1,4 +1,4 @@
-const { Message, User } = require('../models/index')
+const { Message, User, LikedPosts } = require('../models/index')
 
 const { gql } = require('apollo-server-express');
 const { PubSub } = require('apollo-server-express')
@@ -26,7 +26,6 @@ extend type Query {
 extend type Mutation {
   deleteMessage(id: Int): Boolean!,
   addMessage(content: String, userId: Int): Message!,
-  likeMessage(id: Int): Int!
 }
 extend type Subscription {
   PaginateMessages(limit: Int!, offset: Int!): PaginateMessages!,
@@ -67,11 +66,6 @@ module.exports.messageResolver = {
             })
             return deleted
         },
-        likeMessage: async (obj, args) => {
-            const liked = await Message.findByPk(args.id);
-            const result = await liked.increment('likes');
-            return result.likes
-        }
     },
     Subscription: {
         messageAdded: {

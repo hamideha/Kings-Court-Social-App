@@ -52,7 +52,7 @@ module.exports.authResolver = {
                             userId: user[0].id,
                             email: user[0].email
                         }, process.env.AUTH_SECRET, { expiresIn: '1h' });
-                        res.cookie('token', token, { maxAge: 1800000, httpOnly: true })
+                        res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true })
                         return user[0]
                     }
                 }
