@@ -11,7 +11,8 @@ type User {
   lastName: String,
   email: String,
   profilePicture: String,
-  messages: [Message!]!
+  messages: [Message!]!,
+  createdAt: Date!
 }
 extend type Query {
   Users: [User],

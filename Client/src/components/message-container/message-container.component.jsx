@@ -46,7 +46,6 @@ const MessageContainer = () => {
                     subscribeToNewComments={() =>
                         subscribeToMore({
                             document: SUBSCRIBE_NEW_MESSAGE,
-                            variables: { offset: data?.PaginateMessages.rows.length, limit: 10 },
                             updateQuery: (prev, { subscriptionData }) => {
                                 if (!subscriptionData.data) return prev;
                                 const newMessage = subscriptionData.data.messageAdded;

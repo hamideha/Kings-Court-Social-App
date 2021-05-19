@@ -53,6 +53,7 @@ new SubscriptionServer(
         execute,
         subscribe,
         schema,
+        onConnect: (connectionParams, webSocket) => { console.log(connectionParams) }
     },
     {
         server: httpServer

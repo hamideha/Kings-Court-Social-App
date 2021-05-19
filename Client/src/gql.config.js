@@ -16,7 +16,8 @@ export const errorLink = onError(({ graphQLErrors, networkError }) => {
 export const wsLink = new WebSocketLink({
     uri: 'ws://localhost:4000/graphql',
     options: {
-        reconnect: true
+        reconnect: true,
+        connectionParams: { idtoken: "testTOken" }
     }
 });
 

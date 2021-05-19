@@ -47,7 +47,9 @@ query PaginateMessages($limit: Int!, $offset: Int!) {
             user {
                 firstName
                 lastName
+                email
                 profilePicture
+                createdAt
             }
         }
     }
