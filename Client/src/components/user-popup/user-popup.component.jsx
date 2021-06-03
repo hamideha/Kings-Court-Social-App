@@ -21,7 +21,7 @@ const UserPopup = ({ user, children }) => {
         <Popover className="relative">
             {({ open }) => (
                 <>
-                    <Popover.Button ref={setReferenceElement} className="mr-4 z-30" onClick={(e) => { update() }}>
+                    <Popover.Button ref={setReferenceElement} className="mr-4 z-30 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-indigo-700" onClick={(e) => { update() }}>
                         {children}
                     </Popover.Button>
                     <Transition show={open}>

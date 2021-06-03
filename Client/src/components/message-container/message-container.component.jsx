@@ -56,8 +56,7 @@ const MessageContainer = () => {
 
                                 return Object.assign({}, prev, { newField: true }, {
                                     PaginateMessages: {
-                                        rows: [newMessage],
-                                        hasMore: prev.PaginateMessages.hasMore,
+                                        rows: newMessage
                                     }
                                 });
                             }

@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import url("./assets/fonts/Inter/inter.css");
+@import url("./assets/fonts/Piedmont/Piedmont.css");
 
 body {
   margin: 0;

@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'BN Piedmont';
+    src: url('BNPiedmontRegular.woff2') format('woff2'),
+        url('BNPiedmontRegular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+

@@ -5,6 +5,7 @@ import { SignInButton, SignOutButton } from '../../auth/auth-buttons.component'
 import { useStore } from '../../store/global-store'
 
 import DefaultProfile from '../../assets/default-profile.png'
+import Logo from '../../assets/Logo.svg'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -20,10 +21,11 @@ const Header = () => {
                     <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                         <div className="flex-shrink-0 flex items-center">
                             <img
-                                className="block h-8 w-auto"
-                                src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
-                                alt="Workflow"
+                                className="block h-14 w-auto"
+                                src={Logo}
+                                alt="Logo"
                             />
+                            <p className="hidden sm:block font-bold text-white text-xl mx-2" style={{ fontFamily: 'BN Piedmont' }}>King's Court</p>
                         </div>
                     </div>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -100,7 +102,7 @@ const Header = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
