@@ -18,15 +18,6 @@
 
 @font-face {
     font-family: 'SFProDisplay';
-    src: url('SFProDisplay-Heavy.woff2') format('woff2'),
-        url('SFProDisplay-Heavy.woff') format('woff');
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'SFProDisplay';
     src: url('SFProDisplay-Regular.woff2') format('woff2'),
         url('SFProDisplay-Regular.woff') format('woff');
     font-weight: normal;
