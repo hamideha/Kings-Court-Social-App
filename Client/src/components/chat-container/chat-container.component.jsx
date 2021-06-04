@@ -18,8 +18,8 @@ const ChatContainer = () => {
                         )
                     })}
                 </ScrollContainer>
-                <div className="sticky bottom-1 left-0 w-11/12 bg-white m-auto py-2 rounded-xl">
-                    <div className="flex flex-row w-full">
+                <div className="sticky bottom-0 left-0 w-full bg-white m-auto bg-gray-800 border-t-2 border-gray-600">
+                    <div className="flex flex-row w-full py-3">
                         <input
                             type="text"
                             className="flex w-11/12 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-300 ml-2 h-8 m-auto"
