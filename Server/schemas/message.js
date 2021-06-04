@@ -1,7 +1,6 @@
 const { Message, User, LikedPosts } = require('../models/index')
 
-const { gql } = require('apollo-server-express');
-const { PubSub } = require('apollo-server-express')
+const { gql, PubSub } = require('apollo-server-express');
 
 const pubsub = new PubSub()
 

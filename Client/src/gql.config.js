@@ -48,7 +48,6 @@ const client = new ApolloClient({
                     PaginateMessages: {
                         keyArgs: false,
                         merge(existing, incoming) {
-                            console.log(incoming)
                             if (!incoming) return existing
                             if (!existing) return incoming
                             const { rows, ...rest } = incoming;
