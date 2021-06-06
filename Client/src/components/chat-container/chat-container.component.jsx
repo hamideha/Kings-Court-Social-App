@@ -1,33 +1,44 @@
+import { useQuery } from '@apollo/client';
 import ScrollContainer from 'react-indiana-drag-scroll'
 
-import { PaperAirplaneIcon } from '@heroicons/react/solid'
-
+import { NewChat } from '../new-chat/new-chat.component'
 import ChatBubble from '../chat-bubble/chat-bubble.component'
 
-const hello = new Array(60).fill(0)
+import { GET_CHATS, SUBSCRIBE_NEW_CHAT } from '../../queries/chat.queries'
 
 const ChatContainer = () => {
+    const { data, subscribeToMore } = useQuery(GET_CHATS);
+
     return (
         <>
             <div className="hidden md:block w-80 bg-gray-800">
-                <ScrollContainer activationDistance={5} hideScrollbars={false} className="h-full overflow-y-auto scrollbar-hide pb-14 px-3">
+                <ScrollContainer horizontal={false} activationDistance={5} hideScrollbars={false} className="h-full overflow-y-auto scrollbar-hide pb-14 px-3">
                     <h1 className="text-white" style={{ fontFamily: 'SFProDisplay', fontWeight: 'bold', fontSize: '28px' }}>Chat</h1>
-                    {hello.map((el, idx) => {
+                    {data && data.chats && data.chats.map((chat, idx) => {
                         return (
-                            <ChatBubble key={idx} />
+                            <ChatBubble key={idx} chat={chat} />
                         )
                     })}
                 </ScrollContainer>
                 <div className="sticky bottom-0 left-0 w-full bg-white m-auto bg-gray-800 border-t-2 border-gray-600">
-                    <div className="flex flex-row w-full py-3">
-                        <input
-                            type="text"
-                            className="flex w-11/12 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-300 ml-2 h-8 m-auto"
-                        />
-                        <button className="h-8 w-8 mx-1 rounded-full flex justify-center items-center hover:bg-blue-100 focus:outline-none">
-                            <PaperAirplaneIcon className="w-5 text-blue-600 m-auto" />
-                        </button>
-                    </div>
+                    <NewChat
+                        subscribeToNewChats={() =>
+                            subscribeToMore({
+                                document: SUBSCRIBE_NEW_CHAT,
+                                updateQuery: (prev, { subscriptionData }) => {
+                                    if (!subscriptionData.data) return prev;
+                                    const newChat = subscriptionData.data.chatSent;
+                                    const exists = prev.chats.find(
+                                        ({ id }) => id === newChat.id
+                                    );
+                                    if (exists) return prev;
+
+                                    return Object.assign({}, prev, {
+                                        chats: [...prev.chats, newChat]
+                                    });
+                                }
+                            })}
+                    />
                 </div>
             </div>
         </>

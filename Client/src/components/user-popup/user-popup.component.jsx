@@ -14,7 +14,7 @@ const UserPopup = ({ user, children }) => {
     let [referenceElement, setReferenceElement] = useState()
     let [popperElement, setPopperElement] = useState()
     let { styles, attributes, update } = usePopper(referenceElement, popperElement, {
-        placement: 'right-end',
+        placement: 'right',
     })
 
     return (
@@ -35,7 +35,7 @@ const UserPopup = ({ user, children }) => {
                             leaveTo="opacity-0 translate-y-1"
                         >
                             <Popover.Panel
-                                className="z-50 w-screen max-w-sm px-4 mt-3"
+                                className="z-50 w-screen max-w-sm px-4"
                                 ref={setPopperElement}
                                 style={styles.popper}
                                 {...attributes.popper}

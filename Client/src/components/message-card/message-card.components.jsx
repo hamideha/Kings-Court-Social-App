@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { getFormatted } from '../../utils/dates'
 
 import DefaultProfile from '../../assets/default-profile.png'

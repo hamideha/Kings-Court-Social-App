@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client';
-import { NEW_MESSAGE } from '../../queries/message.queries'
 import { useStore } from '../../store/global-store'
+
+import { NEW_MESSAGE } from '../../queries/message.queries'
 
 import { AddButton, SubmitModalButton } from '../buttons/buttons.component'
 import { TextArea } from '../fields/fields.component'
@@ -14,7 +15,7 @@ export const NewMessage = ({ subscribeToNewComments }) => {
     })
 
     const { currentUser } = useStore()
-    const [addMessage, { data, loading, error }] = useMutation(NEW_MESSAGE)
+    const [addMessage] = useMutation(NEW_MESSAGE)
 
     const [newMessage, setNewMessage] = useState('')
     const [isOpen, setIsOpen] = useState(false)

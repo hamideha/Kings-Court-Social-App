@@ -17,7 +17,7 @@ export const wsLink = new WebSocketLink({
     uri: 'ws://localhost:4000/graphql',
     options: {
         reconnect: true,
-        connectionParams: { idtoken: "testTOken" }
+        connectionParams: { idtoken: "testToken" }
     }
 });
 
@@ -54,7 +54,6 @@ const client = new ApolloClient({
 
                             let result = rest;
                             result.rows = Array.isArray(rows) ? [...existing.rows, ...rows] : [rows, ...existing.rows];
-                            // THIS IS A TEMPORARY SOLUTION. Its hardcoded that if the incomingrows is only 1 so essentially a new message, then append it to the beginning of the array. What happens if during pagination on the last page there is only 1 row, then it will be pushed above the previous fetch.
 
                             return result
                         }
