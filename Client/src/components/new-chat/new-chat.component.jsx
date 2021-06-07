@@ -12,13 +12,16 @@ export const NewChat = ({ subscribeToNewChats }) => {
     })
 
     const { currentUser } = useStore()
-    const [addChat] = useMutation(POST_CHAT)
-
+    const [addChat, { error }] = useMutation(POST_CHAT)
     const [newChat, setNewChat] = useState('')
 
     const handleSubmit = () => {
         addChat({ variables: { content: newChat, userId: currentUser?.authUser?.id } });
         setNewChat('');
+    }
+
+    if (error) {
+        return <h1>{JSON.stringify(error.message)}</h1>
     }
 
     return (

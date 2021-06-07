@@ -6,6 +6,7 @@ import { HeartIcon } from '@heroicons/react/outline'
 
 
 const MessageCard = ({ user, message }) => {
+    console.log(message)
     return (
         <>
             <div className="flex justify-center flex-col m-1 p-4 shadow-lg border border-grey-light bg-white break-words">
@@ -21,10 +22,11 @@ const MessageCard = ({ user, message }) => {
                 <div>
                     <p className="text-grey-darker mt-4" style={{ fontSize: '14px' }}>{message.content}</p>
                 </div>
-                <div className="message-functions">
-                    <div className="h-8 w-8 rounded-full flex justify-center items-center hover:bg-blue-100">
+                <div className="message-functions flex flex-row">
+                    <div className="h-8 w-8 rounded-full flex flex-row justify-center items-center hover:bg-blue-100">
                         <HeartIcon className="h-5 w-5 text-blue-600" />
                     </div>
+                    <p className="text-grey-dark font-light prose flex items-center px-1">{message.likes}</p>
                 </div>
 
             </div>

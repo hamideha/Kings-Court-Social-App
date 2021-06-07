@@ -8,6 +8,9 @@ import {
 import { useStore } from './store/global-store'
 import { useIsAuthed } from './auth/useAuth.hook'
 
+import { ErrorBoundary } from 'react-error-boundary'
+import ErrorFallback from './components/error-boundary/error-boundary.component'
+
 import Header from './components/header/header.component'
 import Home from './pages/home/home.component'
 import Landing from './pages/landing/landing.component';
@@ -26,13 +29,17 @@ const App = () => {
 
   return (
     <div className="App h-screen flex flex-col overflow-hidden">
-      <Header />
-      <Switch>
-        <Route exact path='/' component={Home} />
-        <Route exact path='/home' component={Landing} />
-        <Redirect from="*" to="/" />
-      </Switch>
-    </div >
+      <ErrorBoundary
+        FallbackComponent={ErrorFallback}
+      >
+        <Header />
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route exact path='/home' component={Landing} />
+          <Redirect from="*" to="/" />
+        </Switch>
+      </ErrorBoundary>
+    </div>
   );
 }
 
