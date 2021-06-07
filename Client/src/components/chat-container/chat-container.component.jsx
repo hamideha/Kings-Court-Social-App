@@ -12,7 +12,7 @@ const ChatContainer = () => {
     return (
         <>
             <div className="hidden md:block w-80 bg-gray-800">
-                <ScrollContainer horizontal={false} activationDistance={5} hideScrollbars={false} className="h-full overflow-y-auto scrollbar-hide pb-14 px-3">
+                <ScrollContainer horizontal={false} activationDistance={5} hideScrollbars={false} className="h-full overflow-y-auto scrollbar-hide pb-14 px-3" id="chat-scroller">
                     <h1 className="text-white" style={{ fontFamily: 'SFProDisplay', fontWeight: 'bold', fontSize: '28px' }}>Chat</h1>
                     {data && data.chats && data.chats.map((chat, idx) => {
                         return (

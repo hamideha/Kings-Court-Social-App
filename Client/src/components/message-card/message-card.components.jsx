@@ -6,7 +6,6 @@ import { HeartIcon } from '@heroicons/react/outline'
 
 
 const MessageCard = ({ user, message }) => {
-    console.log(message)
     return (
         <>
             <div className="flex justify-center flex-col m-1 p-4 shadow-lg border border-grey-light bg-white break-words">

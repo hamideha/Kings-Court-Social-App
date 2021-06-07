@@ -5,7 +5,10 @@ export const useStore = create(persist(
     set => ({
         currentUser: {},
         setCurrentUser: (user) => {
-            set({ currentUser: user })
+            if (user && user.authUser) {
+                delete user.authUser.messages
+                set({ currentUser: user })
+            }
         },
         // setUserOnLogin: (user) => {
         //     set({ currentUser: user })

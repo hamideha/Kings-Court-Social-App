@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { PaperAirplaneIcon } from '@heroicons/react/solid'
 import { PaperClipIcon } from '@heroicons/react/outline'
 
@@ -10,7 +11,15 @@ export const TextArea = ({ value, required, onChange }) => {
     )
 }
 
-export const ChatBox = ({ value, onChange, onClick }) => {
+export const ChatBox = ({ value, onChange, onClick, disabled }) => {
+    const inputRef = useRef(null)
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && document.activeElement === inputRef.current) {
+            onClick()
+        }
+    }
+
     return (
         <div className="flex flex-row justify-center items-center w-full py-3">
             <div className="w-11/12 flex ml-2">
@@ -18,13 +27,15 @@ export const ChatBox = ({ value, onChange, onClick }) => {
                     <PaperClipIcon className="w-5 text-blue-600 m-auto" />
                 </span>
                 <input
+                    ref={inputRef}
                     value={value}
                     onChange={onChange}
+                    onKeyUp={handleKeyDown}
                     type="text"
                     className="flex w-11/12 border-gray-300 rounded-xl rounded-l-none focus:outline-none focus:border-indigo-300 h-8 m-auto"
                 />
             </div>
-            <button onClick={onClick} type="submit" className="h-8 w-8 mx-1 rounded-full flex justify-center items-center hover:bg-blue-100 focus:outline-none">
+            <button onClick={onClick} type="submit" className="h-8 w-8 mx-1 rounded-full flex justify-center items-center hover:bg-blue-100 focus:outline-none disabled:opacity-50" disabled={disabled}>
                 <PaperAirplaneIcon className="w-5 text-blue-600 m-auto" />
             </button>
         </div>
