@@ -23,13 +23,16 @@ mutation logoutUser {
 `;
 
 export const GET_AUTH = gql`
-  query isAuthed {
-    isAuthed{
+query isAuthed {
+  isAuthed {
+    isLoggedIn
+    user {
       id
       firstName
       lastName
       email
       profilePicture
-      }
     }
+  }
+}
 `;

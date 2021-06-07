@@ -4,12 +4,15 @@ import { persist } from "zustand/middleware"
 export const useStore = create(persist(
     set => ({
         currentUser: {},
-        setUserOnLogin: (user) => {
+        setCurrentUser: (user) => {
             set({ currentUser: user })
         },
-        setUserOnLogout: () => set({ currentUser: {} })
+        // setUserOnLogin: (user) => {
+        //     set({ currentUser: user })
+        // },
+        // setUserOnLogout: () => set({ currentUser: {} })
     }),
     {
-        name: "user-storage"
+        name: "user-storage",
     }
 ))
