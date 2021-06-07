@@ -6,7 +6,7 @@ import { animateScroll as scroll } from 'react-scroll'
 import { POST_CHAT } from '../../queries/chat.queries'
 
 import { ChatBox } from '../fields/fields.component'
-console.log(scroll)
+
 export const NewChat = ({ subscribeToNewChats }) => {
     useEffect(() => {
         subscribeToNewChats()
