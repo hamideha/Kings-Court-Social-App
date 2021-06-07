@@ -1,5 +1,4 @@
 import { useQuery } from '@apollo/client';
-import ScrollContainer from 'react-indiana-drag-scroll'
 
 import { NewChat } from '../new-chat/new-chat.component'
 import ChatBubble from '../chat-bubble/chat-bubble.component'
@@ -12,14 +11,14 @@ const ChatContainer = () => {
     return (
         <>
             <div className="hidden md:block w-80 bg-gray-800">
-                <ScrollContainer horizontal={false} activationDistance={5} hideScrollbars={false} className="h-full overflow-y-auto scrollbar-hide pb-14 px-3" id="chat-scroller">
+                <div className="h-full overflow-y-auto pb-14 px-3" id="chat-scroller">
                     <h1 className="text-white" style={{ fontFamily: 'SFProDisplay', fontWeight: 'bold', fontSize: '28px' }}>Chat</h1>
                     {data && data.chats && data.chats.map((chat, idx) => {
                         return (
                             <ChatBubble key={idx} chat={chat} />
                         )
                     })}
-                </ScrollContainer>
+                </div>
                 <div className="sticky bottom-0 left-0 w-full bg-white m-auto bg-gray-800 border-t-2 border-gray-600">
                     <NewChat
                         subscribeToNewChats={() =>

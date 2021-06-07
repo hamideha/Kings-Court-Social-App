@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client';
 import { useStore } from '../../store/global-store'
-import { animateScroll as scroll } from 'react-scroll'
+import { animateScroll } from 'react-scroll'
 
 import { POST_CHAT } from '../../queries/chat.queries'
 
@@ -18,16 +18,15 @@ export const NewChat = ({ subscribeToNewChats }) => {
 
     const handleSubmit = () => {
         if (newChat !== '') {
-            addChat({ variables: { content: newChat, userId: currentUser?.authUser?.id } });
-            setNewChat('');
-
+            addChat({ variables: { content: newChat, userId: currentUser?.authUser?.id } }).then(() => {
+                setNewChat('');
+                animateScroll.scrollToBottom({
+                    containerId: "chat-scroller",
+                    isDynamic: true,
+                    duration: (scrollDistanceInPx) => { return scrollDistanceInPx / 8 },
+                })
+            });
         }
-        scroll.scrollToTop({
-            containerId: "chat-scroller",
-            duration: 3000,
-            delay: 2000,
-            smooth: "linear"
-        });
     }
 
     if (error) {

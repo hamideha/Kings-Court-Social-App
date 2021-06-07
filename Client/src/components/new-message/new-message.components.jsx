@@ -21,9 +21,10 @@ export const NewMessage = ({ subscribeToNewComments }) => {
     const [isOpen, setIsOpen] = useState(false)
 
     const handleSubmit = () => {
-        addMessage({ variables: { content: newMessage, userId: currentUser?.authUser?.id } });
-        setIsOpen(false);
-        setNewMessage('');
+        addMessage({ variables: { content: newMessage, userId: currentUser?.authUser?.id } }).then(() => {
+            setIsOpen(false);
+            setNewMessage('');
+        });
     }
 
     return (
