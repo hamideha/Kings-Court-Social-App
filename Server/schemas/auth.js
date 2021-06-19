@@ -31,7 +31,7 @@ module.exports.authResolver = {
                     return err
                 }
             };
-            return { user: new AuthenticationError('Please login to continue using the website!'), isLoggedIn: false }
+            return { user: undefined, isLoggedIn: false }
         }
     },
     Mutation: {

@@ -8,10 +8,6 @@ mutation authUser($accessToken: String!) {
     lastName
     email
     profilePicture
-    messages {
-      content
-      likes
-    }
   }
 }
 `;

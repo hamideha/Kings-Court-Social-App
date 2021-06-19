@@ -18,7 +18,7 @@ export const NewChat = ({ subscribeToNewChats }) => {
 
     const handleSubmit = () => {
         if (newChat !== '') {
-            addChat({ variables: { content: newChat, userId: currentUser?.authUser?.id } }).then(() => {
+            addChat({ variables: { content: newChat, userId: currentUser?.id } }).then(() => {
                 setNewChat('');
                 animateScroll.scrollToBottom({
                     containerId: "chat-scroller",

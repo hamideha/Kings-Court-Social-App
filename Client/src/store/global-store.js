@@ -3,11 +3,14 @@ import { persist } from "zustand/middleware"
 
 export const useStore = create(persist(
     set => ({
+        userLoadingState: true,
         currentUser: {},
-        setCurrentUser: (user) => {
-            if (user && user.authUser) {
-                delete user.authUser.messages
-                set({ currentUser: user })
+        setCurrentUser: async (user) => {
+            if (user) {
+                const loadedUser = await user
+                set({ currentUser: loadedUser })
+            } else {
+                set({ currentUser: undefined, userLoadingState: false })
             }
         },
         // setUserOnLogin: (user) => {

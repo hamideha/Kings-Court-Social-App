@@ -4,7 +4,7 @@ import DefaultProfile from '../../assets/default-profile.png'
 
 const ChatBubble = ({ chat }) => {
     const { currentUser } = useStore()
-    const isCurrentUser = chat.user.id === currentUser?.authUser?.id;
+    const isCurrentUser = chat.user.id === currentUser?.id;
 
     return (
         <>

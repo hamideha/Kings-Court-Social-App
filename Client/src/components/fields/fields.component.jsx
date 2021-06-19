@@ -35,7 +35,7 @@ export const ChatBox = ({ value, onChange, onClick, disabled }) => {
                     className="flex w-11/12 border-gray-300 rounded-xl rounded-l-none focus:outline-none focus:border-indigo-300 h-8 m-auto"
                 />
             </div>
-            <button onClick={onClick} type="submit" className="h-8 w-8 mx-1 rounded-full flex justify-center items-center hover:bg-blue-100 focus:outline-none disabled:opacity-50" disabled={disabled}>
+            <button onClick={onClick} type="submit" className={`h-8 w-8 mx-1 rounded-full flex justify-center items-center focus:outline-none disabled:opacity-50 ${disabled ? "cursor-default" : "hover:bg-blue-100"}`} disabled={disabled}>
                 <PaperAirplaneIcon className="w-5 text-blue-600 m-auto" />
             </button>
         </div>

@@ -14,7 +14,7 @@ const useAuth = () => {
 
   const authenticate = async (vars) => {
     const { data } = await authUser(vars)
-    setCurrentUser(data)
+    setCurrentUser(data.authUser)
   }
 
   return { authenticate, data, loading, error, called }

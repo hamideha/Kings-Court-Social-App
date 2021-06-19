@@ -22,7 +22,7 @@ const MessageCard = ({ user, message }) => {
                     <p className="text-grey-darker mt-4" style={{ fontSize: '14px' }}>{message.content}</p>
                 </div>
                 <div className="message-functions flex flex-row">
-                    <div className="h-8 w-8 rounded-full flex flex-row justify-center items-center hover:bg-blue-100">
+                    <div className="h-7 w-7 rounded-full flex flex-row justify-center items-center hover:bg-blue-100">
                         <HeartIcon className="h-5 w-5 text-blue-600" />
                     </div>
                     <p className="text-grey-dark font-light prose flex items-center px-1">{message.likes}</p>
