@@ -1,8 +1,7 @@
 const { User } = require('../models/index')
 
-const { gql, PubSub } = require('apollo-server-express');
-
-const pubsub = new PubSub()
+const { gql } = require('apollo-server-express');
+const { pubsub } = require('./pubsub')
 
 const chats = []
 const CHAT_CHANNEL = 'CHAT_CHANNEL'
@@ -26,27 +25,27 @@ extend type Subscription {
 `;
 
 module.exports.chatResolver = {
-    Query: {
-        chats: async () => {
-            return chats
-        }
-    },
-    Mutation: {
-        postChat: async (obj, { userId, content }) => {
-            const user = await User.findByPk(userId)
-            const chat = { id: chats.length + 1, user, content, createdAt: new Date() }
-
-            chats.push(chat)
-            pubsub.publish(CHAT_CHANNEL, { chatSent: chat })
-
-            return chat
-        }
-    },
-    Subscription: {
-        chatSent: {
-            subscribe: () => {
-                return pubsub.asyncIterator([CHAT_CHANNEL])
-            }
-        }
+  Query: {
+    chats: async () => {
+      return chats
     }
+  },
+  Mutation: {
+    postChat: async (obj, { userId, content }) => {
+      const user = await User.findByPk(userId)
+      const chat = { id: chats.length + 1, user, content, createdAt: new Date() }
+
+      chats.push(chat)
+      pubsub.publish(CHAT_CHANNEL, { chatSent: chat })
+
+      return chat
+    }
+  },
+  Subscription: {
+    chatSent: {
+      subscribe: () => {
+        return pubsub.asyncIterator([CHAT_CHANNEL])
+      }
+    }
+  }
 }

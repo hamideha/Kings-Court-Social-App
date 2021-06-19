@@ -17,7 +17,7 @@ import Home from './pages/home/home.component'
 import Landing from './pages/landing/landing.component';
 
 const App = () => {
-  const { userLoadingState, currentUser, setCurrentUser } = useStore()
+  const { setCurrentUser } = useStore()
   const { data, loading, error } = useIsAuthed()
 
   useEffect(() => {
@@ -27,14 +27,13 @@ const App = () => {
       setCurrentUser()
     }
   }, [data, setCurrentUser])
-  console.log(userLoadingState, currentUser)
 
   return (
     <div className="App h-screen flex flex-col overflow-hidden">
       <ErrorBoundary
         FallbackComponent={ErrorFallback}
       >
-        {userLoadingState ? <LoadingElement /> :
+        {loading ? <LoadingElement /> :
           <>
             <Header />
             <Switch>

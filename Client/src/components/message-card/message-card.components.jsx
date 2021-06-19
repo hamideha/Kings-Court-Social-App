@@ -1,11 +1,26 @@
+import { useEffect } from 'react';
+import { useMutation } from '@apollo/client';
 import { getFormatted } from '../../utils/dates'
+import { useStore } from '../../store/global-store'
 
+import { POST_LIKE } from '../../queries/likes.queries'
+
+import { LikeButton } from '../buttons/buttons.component'
 import DefaultProfile from '../../assets/default-profile.png'
 import UserPopup from '../user-popup/user-popup.component'
-import { HeartIcon } from '@heroicons/react/outline'
 
+const MessageCard = ({ user, message, subscribeToNewLike }) => {
+    useEffect(() => {
+        subscribeToNewLike()
+    })
 
-const MessageCard = ({ user, message }) => {
+    const { currentUser } = useStore()
+
+    const [addLike] = useMutation(POST_LIKE)
+    const handleLike = () => {
+        addLike({ variables: { messageId: message.id, userId: currentUser?.id } })
+    }
+
     return (
         <>
             <div className="flex justify-center flex-col m-1 p-4 shadow-lg border border-grey-light bg-white break-words">
@@ -22,9 +37,7 @@ const MessageCard = ({ user, message }) => {
                     <p className="text-grey-darker mt-4" style={{ fontSize: '14px' }}>{message.content}</p>
                 </div>
                 <div className="message-functions flex flex-row">
-                    <div className="h-7 w-7 rounded-full flex flex-row justify-center items-center hover:bg-blue-100">
-                        <HeartIcon className="h-5 w-5 text-blue-600" />
-                    </div>
+                    <LikeButton onClick={handleLike} />
                     <p className="text-grey-dark font-light prose flex items-center px-1">{message.likes}</p>
                 </div>
 

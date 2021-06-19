@@ -1,8 +1,7 @@
-const { Message, User, LikedPosts } = require('../models/index')
+const { Message } = require('../models/index')
 
-const { gql, PubSub } = require('apollo-server-express');
-
-const pubsub = new PubSub()
+const { gql } = require('apollo-server-express');
+const { pubsub } = require('./pubsub')
 
 module.exports.messageTypeDef = gql`
 type Message {
@@ -74,20 +73,6 @@ module.exports.messageResolver = {
             resolve: async (payload, args, context, info) => {
                 const data = await payload.addMessage
                 return data;
-            },
-        },
-        PaginateMessages: {
-            subscribe: () => {
-                return pubsub.asyncIterator(['ADDED_MESSAGE'])
-            },
-            resolve: async (payload, args, context, info) => {
-                const addMessage = await payload.addMessage
-                const data = await Message.findAndCountAll({
-                    limit: args.limit,
-                    offset: args.offset,
-                    order: [['createdAt', 'DESC']]
-                })
-                return { rows: data.rows, hasMore: args.offset < data.count - 1 }
             },
         }
     }

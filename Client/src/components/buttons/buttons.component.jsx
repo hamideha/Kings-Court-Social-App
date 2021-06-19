@@ -1,3 +1,5 @@
+import { HeartIcon } from '@heroicons/react/outline'
+
 export const AddButton = ({ onClick }) => {
     return (
         <button
@@ -19,5 +21,13 @@ export const SubmitModalButton = ({ onClick, children, disabled }) => {
         >
             {children}
         </button>
+    )
+}
+
+export const LikeButton = ({ onClick }) => {
+    return (
+        <div className="h-7 w-7 rounded-full flex flex-row justify-center items-center hover:bg-blue-100" onClick={onClick}>
+            <HeartIcon className="h-5 w-5 text-blue-600" />
+        </div>
     )
 }
