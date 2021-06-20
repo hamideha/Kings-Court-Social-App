@@ -2,19 +2,14 @@ const { Message, User, LikedPosts } = require('../models/index')
 
 const { gql } = require('apollo-server-express');
 
-const { pubsub } = require('./pubsub')
-
 module.exports.likesTypeDef = gql`
 extend type Query {
-  messageLikes(messageId: Int!): Int!
+  messageLikes(messageId: Int!): Message!
   usersLikes(userId: Int!): [Message!]!
   messageLikers(messageId: Int!): [User!]!
 }
 extend type Mutation {
-  likeMessage(userId: Int!, messageId: Int!): Int!
-}
-extend type Subscription {
-  messageLiked: Int!
+  likeMessage(userId: Int!, messageId: Int!): Message!
 }
 `;
 
@@ -40,7 +35,7 @@ module.exports.likesResolver = {
         },
         messageLikes: async (obj, args) => {
             const message = await Message.findByPk(args.messageId)
-            return message.likes
+            return message
         }
     },
     Mutation: {
@@ -68,16 +63,7 @@ module.exports.likesResolver = {
                 const message = await likedMessage.decrement('likes')
                 messageLikes = message.likes
             }
-
-            pubsub.publish('LIKED_MESSAGE', { messageLiked: messageLikes });
-            return messageLikes
-        }
-    },
-    Subscription: {
-        messageLiked: {
-            subscribe: () => {
-                return pubsub.asyncIterator(['LIKED_MESSAGE'])
-            }
+            return likedMessage
         }
     }
 }

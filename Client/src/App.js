@@ -18,7 +18,7 @@ import Landing from './pages/landing/landing.component';
 
 const App = () => {
   const { setCurrentUser } = useStore()
-  const { data, loading, error } = useIsAuthed()
+  const { data, loading } = useIsAuthed()
 
   useEffect(() => {
     if (data) {

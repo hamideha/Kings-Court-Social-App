@@ -7,7 +7,6 @@ import { NewMessage } from '../new-message/new-message.components'
 import Spinner from '../spinner/spinner.components'
 
 import { GET_PAGINATED_MESSAGES, SUBSCRIBE_NEW_MESSAGE } from '../../queries/message.queries'
-import { SUBSCRIBE_NEW_LIKE } from '../../queries/likes.queries'
 
 const MessageContainer = () => {
     const [isLoadingMore, setIsLoadingMore] = useState(false)
@@ -39,13 +38,7 @@ const MessageContainer = () => {
             )}>
                 {data && data.PaginateMessages && data.PaginateMessages.rows.map((message, idx) => {
                     return (
-                        <MessageCard key={idx} message={message} user={message.user}
-                            subscribeToNewLike={() =>
-                                subscribeToMore({
-                                    document: SUBSCRIBE_NEW_LIKE,
-                                })
-                            }
-                        />
+                        <MessageCard key={idx} message={message} user={message.user} />
                     )
                 })}
                 {isLoadingMore && <Spinner />}
