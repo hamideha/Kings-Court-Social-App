@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useQuery } from '@apollo/client';
+
 import { detectBottomScroll } from '../../utils/detectScroll'
 
 import MessageCard from '../message-card/message-card.components'

@@ -7,6 +7,7 @@ extend type Query {
   messageLikes(messageId: Int!): Message!
   usersLikes(userId: Int!): [Message!]!
   messageLikers(messageId: Int!): [User!]!
+  isMessageLikedByUser(messageId: Int!, userId: Int!): Boolean!
 }
 extend type Mutation {
   likeMessage(userId: Int!, messageId: Int!): Message!
@@ -36,7 +37,16 @@ module.exports.likesResolver = {
         messageLikes: async (obj, args) => {
             const message = await Message.findByPk(args.messageId)
             return message
-        }
+        },
+        isMessageLikedByUser: async (obj, args) => {
+            const isLiked = await LikedPosts.findOne({
+                where: {
+                    userId: args.userId,
+                    messageId: args.messageId
+                }
+            });
+            return isLiked ? true : false
+        },
     },
     Mutation: {
         likeMessage: async (obj, { userId, messageId }) => {

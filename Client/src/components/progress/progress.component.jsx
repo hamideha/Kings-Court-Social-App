@@ -11,7 +11,7 @@ const ProgressCircle = ({ progress, maxValue, text }) => {
                 className="justify-self-center"
                 fill="none"
                 strokeWidth="5"
-                stroke={progress <= maxValue ? `rgba(79, 70, 229, ${progress / maxValue})` : `rgb(207, 43, 43)`}
+                stroke={progress <= maxValue ? `rgb(79, 70, 229)` : `rgb(207, 43, 43)`}
                 strokeDasharray="0 1"
                 d="M 0, 20 a 20, 20 0 1,0 40,0 a 20, 20 0 1,0 -40,0"
                 style={{
