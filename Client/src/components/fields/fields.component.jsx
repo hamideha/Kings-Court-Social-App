@@ -1,6 +1,8 @@
 import { useRef } from 'react'
 import { Send, Paperclip } from 'react-feather';
 
+import FilePopup from '../file-popup/file-popup.component';
+
 export const TextArea = ({ value, required, onChange }) => {
     return (
         <textarea className="w-full h-52 resize-none mt-4 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -22,9 +24,11 @@ export const ChatBox = ({ value, onChange, onClick, disabled }) => {
     return (
         <div className="flex flex-row justify-center items-center w-full py-3">
             <div className="w-11/12 flex ml-2">
-                <span className="flex items-center bg-white rounded-xl rounded-r-none px-2 hover:bg-blue-100">
-                    <Paperclip className="w-5 text-blue-600 m-auto" />
-                </span>
+                <FilePopup>
+                    <span className="flex items-center bg-white rounded-xl rounded-r-none px-2 hover:bg-blue-100 h-full">
+                        <Paperclip className="w-5 text-blue-600 m-auto" />
+                    </span>
+                </FilePopup>
                 <input
                     ref={inputRef}
                     value={value}
