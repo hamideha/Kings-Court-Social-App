@@ -1,5 +1,4 @@
-import { HeartIcon } from '@heroicons/react/outline'
-import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid'
+import { Heart } from 'react-feather';
 import { motion } from 'framer-motion'
 
 const LikeButton = ({ onClick, likes, isLikedByUser }) => {
@@ -10,7 +9,7 @@ const LikeButton = ({ onClick, likes, isLikedByUser }) => {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                 >
-                    {isLikedByUser ? <HeartIconSolid className="h-5 w-5 text-red-600" /> : <HeartIcon className="h-5 w-5 text-blue-600" />}
+                    {isLikedByUser ? <Heart className="h-4 w-4 text-red-500 fill-current" /> : <Heart className="h-4 w-4 text-blue-600" />}
                 </motion.div>
             </div>
             <p className="text-grey-dark font-light prose flex items-center px-1 select-none">{likes}</p>

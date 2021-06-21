@@ -1,6 +1,5 @@
 import { useRef } from 'react'
-import { PaperAirplaneIcon } from '@heroicons/react/solid'
-import { PaperClipIcon } from '@heroicons/react/outline'
+import { Send, Paperclip } from 'react-feather';
 
 export const TextArea = ({ value, required, onChange }) => {
     return (
@@ -24,7 +23,7 @@ export const ChatBox = ({ value, onChange, onClick, disabled }) => {
         <div className="flex flex-row justify-center items-center w-full py-3">
             <div className="w-11/12 flex ml-2">
                 <span className="flex items-center bg-white rounded-xl rounded-r-none px-2 hover:bg-blue-100">
-                    <PaperClipIcon className="w-5 text-blue-600 m-auto" />
+                    <Paperclip className="w-5 text-blue-600 m-auto" />
                 </span>
                 <input
                     ref={inputRef}
@@ -36,7 +35,7 @@ export const ChatBox = ({ value, onChange, onClick, disabled }) => {
                 />
             </div>
             <button onClick={onClick} type="submit" className={`h-8 w-8 mx-1 rounded-full flex justify-center items-center focus:outline-none disabled:opacity-50 ${disabled ? "cursor-default" : "hover:bg-blue-100"}`} disabled={disabled}>
-                <PaperAirplaneIcon className="w-5 text-blue-600 m-auto" />
+                <Send className="w-5 text-blue-600 m-auto" />
             </button>
         </div>
     )
