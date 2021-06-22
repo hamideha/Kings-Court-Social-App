@@ -1,7 +1,9 @@
 import { onError } from "@apollo/client/link/error";
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { ApolloClient, InMemoryCache, createHttpLink, split } from '@apollo/client'
+import { ApolloClient, InMemoryCache, split } from '@apollo/client'
+// createHttpLink
+import { createUploadLink } from 'apollo-upload-client';
 
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
@@ -21,7 +23,12 @@ export const wsLink = new WebSocketLink({
     }
 });
 
-export const httpLink = createHttpLink({
+// export const httpLink = createHttpLink({
+//     uri: 'http://localhost:4000/graphql',
+//     credentials: 'include'
+// });
+
+export const httpLink = createUploadLink({
     uri: 'http://localhost:4000/graphql',
     credentials: 'include'
 });

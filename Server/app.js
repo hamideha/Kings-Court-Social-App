@@ -11,6 +11,7 @@ const permissions = require('./schemas/schema-shields')
 const { ApolloServer, makeExecutableSchema } = require('apollo-server-express');
 const { applyMiddleware } = require('graphql-middleware')
 const { execute, subscribe } = require('graphql');
+const { graphqlUploadExpress } = require('graphql-upload');
 const { SubscriptionServer } = require('subscriptions-transport-ws');
 
 const app = express();
@@ -22,6 +23,8 @@ app.use(passport.session());
 app.use(cors({ origin: "http://localhost:3000", credentials: true }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+//graphql-upload middleware 
+app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 1 }),)
 
 app.get('/api', (req, res) => {
     res.json({ hello: "World" })
@@ -36,9 +39,11 @@ const schema = applyMiddleware(
 );
 
 const server = new ApolloServer({
+    // Have to set upload to false to disable apollo's outdated/deprecated upload functions
+    // see https://github.com/apollographql/apollo-server/issues/3508#issuecomment-662371289
+    uploads: false,
     schema,
     context: ({ req, res }) => {
-        // if (!req.headers.authorization) throw new AuthenticationError('you must be logged in');
         return { req, res }
     },
 });

@@ -11,7 +11,7 @@ import UserPopup from '../user-popup/user-popup.component'
 const MessageCard = ({ user, message }) => {
     const { currentUser } = useStore()
 
-    const { data, refetch } = useQuery(GET_IS_MESSAGE_LIKED_BY_USER, { variables: { userId: currentUser?.id, messageId: message.id } });
+    const { data, refetch } = useQuery(GET_IS_MESSAGE_LIKED_BY_USER, { variables: { userId: currentUser?.id || 0, messageId: message.id } });
 
     const [addLike, res] = useMutation(POST_LIKE)
     const handleLike = () => {

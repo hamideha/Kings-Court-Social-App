@@ -6,6 +6,7 @@ const { messageTypeDef, messageResolver } = require('./message')
 const { likesTypeDef, likesResolver } = require('./likedPosts')
 const { authTypeDef, authResolver } = require('./auth')
 const { chatTypeDef, chatResolver } = require('./chat')
+const { fileUploadTypeDef, fileUploadResolver } = require('./fileUpload')
 
 const merge = require('deepmerge')
 
@@ -46,5 +47,5 @@ const resolvers = {
   Date: dateScalar
 };
 
-module.exports.types = [typeDefs, userTypeDef, messageTypeDef, likesTypeDef, authTypeDef, chatTypeDef]
-module.exports.resolvers = merge.all([userResolver, messageResolver, authResolver, likesResolver, chatResolver, resolvers])
+module.exports.types = [typeDefs, userTypeDef, messageTypeDef, likesTypeDef, authTypeDef, chatTypeDef, fileUploadTypeDef]
+module.exports.resolvers = merge.all([userResolver, messageResolver, authResolver, likesResolver, chatResolver, fileUploadResolver, resolvers])
