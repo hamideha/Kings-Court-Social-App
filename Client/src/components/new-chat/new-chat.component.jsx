@@ -4,6 +4,7 @@ import { useStore } from '../../store/global-store'
 import { animateScroll } from 'react-scroll'
 
 import { POST_CHAT } from '../../queries/chat.queries'
+import { UPLOAD_FILE } from '../../queries/fileUpload.queries'
 
 import { ChatBox } from '../fields/fields.component'
 
@@ -13,8 +14,19 @@ export const NewChat = ({ subscribeToNewChats }) => {
     })
 
     const { currentUser } = useStore()
-    const [addChat, { error }] = useMutation(POST_CHAT)
     const [newChat, setNewChat] = useState('')
+
+    const [addChat, { error }] = useMutation(POST_CHAT)
+    const [uploadFileMutation, { loading, data, called }] = useMutation(UPLOAD_FILE);
+    const onChange = ({
+        target: {
+            validity,
+            files: [file],
+        },
+    }) => {
+        if (validity.valid) uploadFileMutation({ variables: { file } })
+            .then(({ data }) => { setNewChat(data.singleUpload.url) })
+    }
 
     const handleSubmit = () => {
         if (newChat !== '') {
@@ -36,9 +48,12 @@ export const NewChat = ({ subscribeToNewChats }) => {
     return (
         <>
             <ChatBox
-                disabled={newChat === ''}
+                disabledSubmit={newChat === ''}
+                disabledInput={loading}
                 onClick={handleSubmit}
                 value={newChat}
+                placeholder={loading ? 'Loading...' : ''}
+                onImageUpload={onChange}
                 onChange={e => setNewChat(e.target.value)}
             />
         </>
