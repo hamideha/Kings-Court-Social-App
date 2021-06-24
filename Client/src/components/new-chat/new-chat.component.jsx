@@ -14,30 +14,44 @@ export const NewChat = ({ subscribeToNewChats }) => {
     })
 
     const { currentUser } = useStore()
+    const [previewImg, setPreviewImg] = useState('')
+    const [uploadFile, setFile] = useState()
     const [newChat, setNewChat] = useState('')
 
     const [addChat, { error }] = useMutation(POST_CHAT)
-    const [uploadFileMutation, { loading, data, called }] = useMutation(UPLOAD_FILE);
+    const [uploadFileMutation, { loading }] = useMutation(UPLOAD_FILE);
     const onChange = ({
         target: {
             validity,
             files: [file],
         },
     }) => {
-        if (validity.valid) uploadFileMutation({ variables: { file } })
-            .then(({ data }) => { setNewChat(data.singleUpload.url) })
+        if (validity.valid) {
+            setPreviewImg(URL.createObjectURL(file))
+            setFile(file)
+        }
     }
 
-    const handleSubmit = () => {
-        if (newChat !== '') {
-            addChat({ variables: { content: newChat, userId: currentUser?.id } }).then(() => {
+    const submitChat = (content) => {
+        addChat({ variables: { content, userId: currentUser?.id } })
+            .then(() => {
                 setNewChat('');
                 animateScroll.scrollToBottom({
                     containerId: "chat-scroller",
                     isDynamic: true,
                     duration: (scrollDistanceInPx) => { return scrollDistanceInPx / 8 },
                 })
+                return
             });
+    }
+
+    const handleSubmit = () => {
+        if (previewImg) {
+            setPreviewImg('')
+            uploadFileMutation({ variables: { file: uploadFile } })
+                .then(({ data }) => { submitChat(data.singleUpload.url) })
+        } else {
+            submitChat(newChat)
         }
     }
 
@@ -48,12 +62,14 @@ export const NewChat = ({ subscribeToNewChats }) => {
     return (
         <>
             <ChatBox
-                disabledSubmit={newChat === ''}
+                disabledSubmit={!newChat && !previewImg}
                 disabledInput={loading}
                 onClick={handleSubmit}
+                previewImg={previewImg}
+                setPreviewImg={setPreviewImg}
+                onImageUpload={onChange}
                 value={newChat}
                 placeholder={loading ? 'Loading...' : ''}
-                onImageUpload={onChange}
                 onChange={e => setNewChat(e.target.value)}
             />
         </>

@@ -21,7 +21,7 @@ const ChatBubble = ({ chat }) => {
                     <img className="w-6 h-6 rounded-full" src={chat.user.profilePicture || DefaultProfile} alt="Profile" />
                 </div>
                 <div className={`relative text-xs py-2 px-4 shadow rounded-xl break-all ${isCurrentUser ? "bg-indigo-100 mr-3" : "bg-white ml-3"}`}>
-                    {isImage ? <img src={chat.content} alt={"Chat"} className="rounded-xl"/> : chat.content}
+                    {isImage ? <img src={chat.content} alt={"Chat"} className="rounded-xl" /> : chat.content}
                 </div>
             </div>
         </>
